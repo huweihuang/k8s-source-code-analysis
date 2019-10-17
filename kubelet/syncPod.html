@@ -1,0 +1,1362 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-hans" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>syncPod · Kubernetes 学习笔记</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="胡伟煌">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-splitter/splitter.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-page-toc-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-image-captions/image-captions.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-tbfed-pagefooter/footer.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-okaidia.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-disqus/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-donate/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="syncLoopIteration.html" />
+    
+
+    
+        <link rel="shortcut icon" href='../images/favicon.ico' type="image/x-icon">
+    
+    
+        <link rel="bookmark" href='../images/favicon.ico' type="image/x-icon">
+    
+    
+        <link rel="apple-touch-icon" href='../images/favicon.ico'>
+    
+    
+        
+        <link rel="apple-touch-icon" sizes="120x120" href="../images/favicon.ico">
+        
+        <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon.ico">
+        
+    
+
+    <style>
+    @media only screen and (max-width: 640px) {
+        .book-header .hidden-mobile {
+            display: none;
+        }
+    }
+    </style>
+    <script>
+        window["gitbook-plugin-github-buttons"] = {"repo":"huweihuang/k8s-source-code-analysis","types":["star"],"size":"small"};
+    </script>
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="输入并搜索" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com" target="_blank" class="custom-link">胡伟煌的博客</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/kubernetes-notes/" target="_blank" class="custom-link">Kubernetes 学习笔记</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/golang-notes/" target="_blank" class="custom-link">Golang 学习笔记</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/linux-notes/" target="_blank" class="custom-link">Linux 学习笔记</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/data-structure-notes/" target="_blank" class="custom-link">数据结构学习笔记</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/python-notes/" target="_blank" class="custom-link">Python 学习笔记</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/blockchain-notes/" target="_blank" class="custom-link">Blockchain 学习笔记</a>
+        </li>
+    
+    
+
+    
+    <li class="divider"></li>
+    
+
+    
+        
+        <li class="header">前言</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                        <b>1.1.</b>
+                    
+                    序言
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">kube-apiserver</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../kube-apiserver/NewAPIServerCommand.html">
+            
+                <a href="../kube-apiserver/NewAPIServerCommand.html">
+            
+                    
+                        <b>2.1.</b>
+                    
+                    NewAPIServerCommand
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">kube-controller-manager</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../kube-controller-manager/NewControllerManagerCommand.html">
+            
+                <a href="../kube-controller-manager/NewControllerManagerCommand.html">
+            
+                    
+                        <b>3.1.</b>
+                    
+                    NewControllerManagerCommand
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../kube-controller-manager/deployment-controller.html">
+            
+                <a href="../kube-controller-manager/deployment-controller.html">
+            
+                    
+                        <b>3.2.</b>
+                    
+                    DeploymentController
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="../kube-controller-manager/sharedIndexInformer.html">
+            
+                <a href="../kube-controller-manager/sharedIndexInformer.html">
+            
+                    
+                        <b>3.3.</b>
+                    
+                    Informer机制
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">kube-scheduler</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../kube-scheduler/NewSchedulerCommand.html">
+            
+                <a href="../kube-scheduler/NewSchedulerCommand.html">
+            
+                    
+                        <b>4.1.</b>
+                    
+                    NewSchedulerCommand
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="../kube-scheduler/registerAlgorithmProvider.html">
+            
+                <a href="../kube-scheduler/registerAlgorithmProvider.html">
+            
+                    
+                        <b>4.2.</b>
+                    
+                    registerAlgorithmProvider
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="../kube-scheduler/scheduleOne.html">
+            
+                <a href="../kube-scheduler/scheduleOne.html">
+            
+                    
+                        <b>4.3.</b>
+                    
+                    scheduleOne
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="../kube-scheduler/findNodesThatFit.html">
+            
+                <a href="../kube-scheduler/findNodesThatFit.html">
+            
+                    
+                        <b>4.4.</b>
+                    
+                    findNodesThatFit
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="../kube-scheduler/PrioritizeNodes.html">
+            
+                <a href="../kube-scheduler/PrioritizeNodes.html">
+            
+                    
+                        <b>4.5.</b>
+                    
+                    PrioritizeNodes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" data-path="../kube-scheduler/preempt.html">
+            
+                <a href="../kube-scheduler/preempt.html">
+            
+                    
+                        <b>4.6.</b>
+                    
+                    preempt
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">kubelet</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="NewKubeletCommand.html">
+            
+                <a href="NewKubeletCommand.html">
+            
+                    
+                        <b>5.1.</b>
+                    
+                    NewKubeletCommand
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="NewMainKubelet.html">
+            
+                <a href="NewMainKubelet.html">
+            
+                    
+                        <b>5.2.</b>
+                    
+                    NewMainKubelet
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="startKubelet.html">
+            
+                <a href="startKubelet.html">
+            
+                    
+                        <b>5.3.</b>
+                    
+                    startKubelet
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="syncLoopIteration.html">
+            
+                <a href="syncLoopIteration.html">
+            
+                    
+                        <b>5.4.</b>
+                    
+                    syncLoopIteration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="5.5" data-path="syncPod.html">
+            
+                <a href="syncPod.html">
+            
+                    
+                        <b>5.5.</b>
+                    
+                    syncPod
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本书使用 GitBook 发布
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >syncPod</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div class="search-plus" id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="kubelet&#x6E90;&#x7801;&#x5206;&#x6790;&#xFF08;&#x4E94;&#xFF09;&#x4E4B;-syncpod">kubelet&#x6E90;&#x7801;&#x5206;&#x6790;&#xFF08;&#x4E94;&#xFF09;&#x4E4B; syncPod</h1>
+<blockquote>
+<p>&#x4EE5;&#x4E0B;&#x4EE3;&#x7801;&#x5206;&#x6790;&#x57FA;&#x4E8E; <code>kubernetes v1.12.0</code> &#x7248;&#x672C;&#x3002;</p>
+</blockquote>
+<p>&#x672C;&#x6587;&#x4E3B;&#x8981;&#x5206;&#x6790;<code>kubelet</code>&#x4E2D;<code>syncPod</code>&#x7684;&#x90E8;&#x5206;&#x3002;</p>
+<h1 id="1-managepodloop">1. <a href="https://github.com/kubernetes/kubernetes/blob/v1.12.0/pkg/kubelet/pod_workers.go#L153" target="_blank">managePodLoop</a></h1>
+<p><code>managePodLoop</code>&#x901A;&#x8FC7;&#x8BFB;&#x53D6;<code>podUpdates</code>channel&#x7684;&#x4FE1;&#x606F;&#xFF0C;&#x6267;&#x884C;<code>syncPodFn</code>&#x51FD;&#x6570;&#xFF0C;&#x800C;<code>syncPodFn</code>&#x51FD;&#x6570;&#x5728;<code>newPodWorkers</code>&#x7684;&#x65F6;&#x5019;&#x8D4B;&#x503C;&#x4E86;&#xFF0C;&#x5373;<code>kubelet.syncPod</code>&#x3002;</p>
+<p>managePodLoop&#x5B8C;&#x6574;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<blockquote>
+<p>&#x6B64;&#x90E8;&#x5206;&#x4EE3;&#x7801;&#x4F4D;&#x4E8E;pkg/kubelet/pod_workers.go</p>
+</blockquote>
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>p <span class="token operator">*</span>podWorkers<span class="token punctuation">)</span> <span class="token function">managePodLoop</span><span class="token punctuation">(</span>podUpdates <span class="token operator">&lt;-</span><span class="token keyword">chan</span> UpdatePodOptions<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> lastSyncTime time<span class="token punctuation">.</span>Time
+    <span class="token keyword">for</span> update <span class="token operator">:=</span> <span class="token keyword">range</span> podUpdates <span class="token punctuation">{</span>
+        err <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+            podUID <span class="token operator">:=</span> update<span class="token punctuation">.</span>Pod<span class="token punctuation">.</span>UID
+            <span class="token comment">// This is a blocking call that would return only if the cache</span>
+            <span class="token comment">// has an entry for the pod that is newer than minRuntimeCache</span>
+            <span class="token comment">// Time. This ensures the worker doesn&apos;t start syncing until</span>
+            <span class="token comment">// after the cache is at least newer than the finished time of</span>
+            <span class="token comment">// the previous sync.</span>
+            status<span class="token punctuation">,</span> err <span class="token operator">:=</span> p<span class="token punctuation">.</span>podCache<span class="token punctuation">.</span><span class="token function">GetNewerThan</span><span class="token punctuation">(</span>podUID<span class="token punctuation">,</span> lastSyncTime<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                <span class="token comment">// This is the legacy event thrown by manage pod loop</span>
+                <span class="token comment">// all other events are now dispatched from syncPodFn</span>
+                p<span class="token punctuation">.</span>recorder<span class="token punctuation">.</span><span class="token function">Eventf</span><span class="token punctuation">(</span>update<span class="token punctuation">.</span>Pod<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedSync<span class="token punctuation">,</span> <span class="token string">&quot;error determining status: %v&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+                <span class="token keyword">return</span> err
+            <span class="token punctuation">}</span>
+      <span class="token comment">// &#x8BE5;&#x90E8;&#x5206;&#x7684;syncPodFn&#x5B9E;&#x9645;&#x4E0A;&#x7684;&#x5B9E;&#x73B0;&#x51FD;&#x6570;&#x662F;kubelet.syncPod</span>
+            err <span class="token operator">=</span> p<span class="token punctuation">.</span><span class="token function">syncPodFn</span><span class="token punctuation">(</span>syncPodOptions<span class="token punctuation">{</span>
+                mirrorPod<span class="token punctuation">:</span>      update<span class="token punctuation">.</span>MirrorPod<span class="token punctuation">,</span>
+                pod<span class="token punctuation">:</span>            update<span class="token punctuation">.</span>Pod<span class="token punctuation">,</span>
+                podStatus<span class="token punctuation">:</span>      status<span class="token punctuation">,</span>
+                killPodOptions<span class="token punctuation">:</span> update<span class="token punctuation">.</span>KillPodOptions<span class="token punctuation">,</span>
+                updateType<span class="token punctuation">:</span>     update<span class="token punctuation">.</span>UpdateType<span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+            lastSyncTime <span class="token operator">=</span> time<span class="token punctuation">.</span><span class="token function">Now</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> err
+        <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment">// notify the call-back function if the operation succeeded or not</span>
+        <span class="token keyword">if</span> update<span class="token punctuation">.</span>OnCompleteFunc <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            update<span class="token punctuation">.</span><span class="token function">OnCompleteFunc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            <span class="token comment">// IMPORTANT: we do not log errors here, the syncPodFn is responsible for logging errors</span>
+            glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Error syncing pod %s (%q), skipping: %v&quot;</span><span class="token punctuation">,</span> update<span class="token punctuation">.</span>Pod<span class="token punctuation">.</span>UID<span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>update<span class="token punctuation">.</span>Pod<span class="token punctuation">)</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        p<span class="token punctuation">.</span><span class="token function">wrapUp</span><span class="token punctuation">(</span>update<span class="token punctuation">.</span>Pod<span class="token punctuation">.</span>UID<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x4EE5;&#x4E0B;&#x5206;&#x6790;<code>syncPod</code>&#x76F8;&#x5173;&#x903B;&#x8F91;&#x3002;</p>
+<h1 id="2-syncpod">2. <a href="https://github.com/kubernetes/kubernetes/blob/v1.12.0/pkg/kubelet/kubelet.go#L1465" target="_blank">syncPod</a></h1>
+<p><code>syncPod</code>&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;&#x662F;&#x4E00;&#x4E2A;&#x5355;&#x4E2A;pod&#x8FDB;&#x884C;&#x540C;&#x6B65;&#x4EFB;&#x52A1;&#x7684;&#x4E8B;&#x52A1;&#x811A;&#x672C;&#x3002;&#x5176;&#x4E2D;&#x5165;&#x53C2;&#x662F;<code>syncPodOptions</code>&#xFF0C;<code>syncPodOptions</code>&#x8BB0;&#x5F55;&#x4E86;&#x9700;&#x8981;&#x540C;&#x6B65;&#x7684;pod&#x7684;&#x76F8;&#x5173;&#x4FE1;&#x606F;&#x3002;&#x5177;&#x4F53;&#x5B9A;&#x4E49;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// syncPodOptions provides the arguments to a SyncPod operation.</span>
+<span class="token keyword">type</span> syncPodOptions <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    <span class="token comment">// the mirror pod for the pod to sync, if it is a static pod</span>
+    mirrorPod <span class="token operator">*</span>v1<span class="token punctuation">.</span>Pod
+    <span class="token comment">// pod to sync</span>
+    pod <span class="token operator">*</span>v1<span class="token punctuation">.</span>Pod
+    <span class="token comment">// the type of update (create, update, sync)</span>
+    updateType kubetypes<span class="token punctuation">.</span>SyncPodType
+    <span class="token comment">// the current status</span>
+    podStatus <span class="token operator">*</span>kubecontainer<span class="token punctuation">.</span>PodStatus
+    <span class="token comment">// if update type is kill, use the specified options to kill the pod.</span>
+    killPodOptions <span class="token operator">*</span>KillPodOptions
+<span class="token punctuation">}</span>
+</code></pre>
+<p><code>syncPod</code>&#x4E3B;&#x8981;&#x6267;&#x884C;&#x4EE5;&#x4E0B;&#x7684;&#x5DE5;&#x4F5C;&#x6D41;&#xFF1A;</p>
+<ul>
+<li>&#x5982;&#x679C;&#x662F;&#x6B63;&#x5728;&#x521B;&#x5EFA;&#x7684;pod&#xFF0C;&#x5219;&#x8BB0;&#x5F55;pod worker&#x7684;&#x542F;&#x52A8;<code>latency</code>&#x3002;</li>
+<li>&#x8C03;&#x7528;<code>generateAPIPodStatus</code>&#x4E3A;pod&#x63D0;&#x4F9B;<code>v1.PodStatus</code>&#x4FE1;&#x606F;&#x3002;</li>
+<li>&#x5982;&#x679C;pod&#x662F;&#x7B2C;&#x4E00;&#x6B21;&#x8FD0;&#x884C;&#xFF0C;&#x8BB0;&#x5F55;pod&#x7684;&#x542F;&#x52A8;<code>latency</code>&#x3002;</li>
+<li>&#x66F4;&#x65B0;<code>status manager</code>&#x4E2D;&#x7684;pod&#x72B6;&#x6001;&#x3002;</li>
+<li>&#x5982;&#x679C;pod&#x4E0D;&#x5E94;&#x8BE5;&#x88AB;&#x8FD0;&#x884C;&#x5219;&#x6740;&#x6B7B;pod&#x3002;</li>
+<li>&#x5982;&#x679C;pod&#x662F;&#x4E00;&#x4E2A;<code>static pod</code>&#xFF0C;&#x5E76;&#x4E14;&#x6CA1;&#x6709;&#x5BF9;&#x5E94;&#x7684;<code>mirror pod</code>&#xFF0C;&#x5219;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;<code>mirror pod</code>&#x3002;</li>
+<li>&#x5982;&#x679C;&#x6CA1;&#x6709;pod&#x7684;&#x6570;&#x636E;&#x76EE;&#x5F55;&#x5219;&#x7ED9;pod&#x521B;&#x5EFA;&#x5BF9;&#x5E94;&#x7684;&#x6570;&#x636E;&#x76EE;&#x5F55;&#x3002;</li>
+<li>&#x7B49;&#x5F85;volume&#x88AB;attach&#x6216;mount&#x3002;</li>
+<li>&#x83B7;&#x53D6;pod&#x7684;secret&#x6570;&#x636E;&#x3002;</li>
+<li>&#x8C03;&#x7528;<code>container runtime</code>&#x7684;<code>SyncPod</code>&#x51FD;&#x6570;&#xFF0C;&#x6267;&#x884C;&#x76F8;&#x5173;pod&#x64CD;&#x4F5C;&#x3002;</li>
+<li>&#x66F4;&#x65B0;pod&#x7684;<code>ingress</code>&#x548C;<code>egress</code>&#x7684;<code>traffic limit</code>&#x3002;</li>
+</ul>
+<p>&#x5F53;&#x4EE5;&#x4E0A;&#x4EFB;&#x52A1;&#x6D41;&#x4E2D;&#x6709;&#x4EFB;&#x4F55;&#x7684;error&#xFF0C;&#x5219;return error&#x3002;&#x5728;&#x4E0B;&#x4E00;&#x6B21;&#x6267;&#x884C;<code>syncPod</code>&#x7684;&#x4EFB;&#x52A1;&#x6D41;&#x4F1A;&#x88AB;&#x518D;&#x6B21;&#x6267;&#x884C;&#x3002;&#x5BF9;&#x4E8E;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x4F1A;&#x88AB;&#x8BB0;&#x5F55;&#x5230;event&#x4E2D;&#xFF0C;&#x65B9;&#x4FBF;debug&#x3002;</p>
+<p>&#x4EE5;&#x4E0B;&#x5BF9;<code>syncPod</code>&#x7684;&#x6267;&#x884C;&#x8FC7;&#x7A0B;&#x8FDB;&#x884C;&#x5206;&#x6790;&#x3002;</p>
+<blockquote>
+<p>syncPod&#x7684;&#x4EE3;&#x7801;&#x4F4D;&#x4E8E;pkg/kubelet/kubelet.go</p>
+</blockquote>
+<h2 id="21-syncpodkill">2.1. SyncPodKill</h2>
+<p>&#x9996;&#x5148;&#xFF0C;&#x83B7;&#x53D6;<code>syncPodOptions</code>&#x7684;pod&#x4FE1;&#x606F;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>kl <span class="token operator">*</span>Kubelet<span class="token punctuation">)</span> <span class="token function">syncPod</span><span class="token punctuation">(</span>o syncPodOptions<span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+    <span class="token comment">// pull out the required options</span>
+    pod <span class="token operator">:=</span> o<span class="token punctuation">.</span>pod
+    mirrorPod <span class="token operator">:=</span> o<span class="token punctuation">.</span>mirrorPod
+    podStatus <span class="token operator">:=</span> o<span class="token punctuation">.</span>podStatus
+    updateType <span class="token operator">:=</span> o<span class="token punctuation">.</span>updateType
+    <span class="token operator">...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x5982;&#x679C;pod&#x662F;&#x9700;&#x8981;&#x88AB;&#x6740;&#x6B7B;&#x7684;&#xFF0C;&#x5219;&#x6267;&#x884C;<code>killPod</code>&#xFF0C;&#x4F1A;&#x5728;&#x6307;&#x5B9A;&#x7684;&#x5BBD;&#x9650;&#x671F;&#x5185;&#x6740;&#x6B7B;pod&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// if we want to kill a pod, do it now!</span>
+<span class="token keyword">if</span> updateType <span class="token operator">==</span> kubetypes<span class="token punctuation">.</span>SyncPodKill <span class="token punctuation">{</span>
+    killPodOptions <span class="token operator">:=</span> o<span class="token punctuation">.</span>killPodOptions
+    <span class="token keyword">if</span> killPodOptions <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token operator">||</span> killPodOptions<span class="token punctuation">.</span>PodStatusFunc <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;kill pod options are required if update type is kill&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    apiPodStatus <span class="token operator">:=</span> killPodOptions<span class="token punctuation">.</span><span class="token function">PodStatusFunc</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> podStatus<span class="token punctuation">)</span>
+    kl<span class="token punctuation">.</span>statusManager<span class="token punctuation">.</span><span class="token function">SetPodStatus</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> apiPodStatus<span class="token punctuation">)</span>
+    <span class="token comment">// we kill the pod with the specified grace period since this is a termination</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> kl<span class="token punctuation">.</span><span class="token function">killPod</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> podStatus<span class="token punctuation">,</span> killPodOptions<span class="token punctuation">.</span>PodTerminationGracePeriodSecondsOverride<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        kl<span class="token punctuation">.</span>recorder<span class="token punctuation">.</span><span class="token function">Eventf</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToKillPod<span class="token punctuation">,</span> <span class="token string">&quot;error killing pod: %v&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token comment">// there was an error killing the pod, so we return that error directly</span>
+        utilruntime<span class="token punctuation">.</span><span class="token function">HandleError</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> err
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="22-syncpodcreate">2.2. SyncPodCreate</h2>
+<p>&#x5982;&#x679C;pod&#x662F;&#x9700;&#x8981;&#x88AB;&#x521B;&#x5EFA;&#x7684;&#xFF0C;&#x5219;&#x8BB0;&#x5F55;pod&#x7684;&#x542F;&#x52A8;<code>latency</code>&#xFF0C;<code>latency</code>&#x4E0E;pod&#x5728;apiserver&#x4E2D;&#x7B2C;&#x4E00;&#x6B21;&#x88AB;&#x8BB0;&#x5F55;&#x76F8;&#x5173;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Latency measurements for the main workflow are relative to the</span>
+<span class="token comment">// first time the pod was seen by the API server.</span>
+<span class="token keyword">var</span> firstSeenTime time<span class="token punctuation">.</span>Time
+<span class="token keyword">if</span> firstSeenTimeStr<span class="token punctuation">,</span> ok <span class="token operator">:=</span> pod<span class="token punctuation">.</span>Annotations<span class="token punctuation">[</span>kubetypes<span class="token punctuation">.</span>ConfigFirstSeenAnnotationKey<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+    firstSeenTime <span class="token operator">=</span> kubetypes<span class="token punctuation">.</span><span class="token function">ConvertToTimestamp</span><span class="token punctuation">(</span>firstSeenTimeStr<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Get</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Record pod worker start latency if being created</span>
+<span class="token comment">// TODO: make pod workers record their own latencies</span>
+<span class="token keyword">if</span> updateType <span class="token operator">==</span> kubetypes<span class="token punctuation">.</span>SyncPodCreate <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span>firstSeenTime<span class="token punctuation">.</span><span class="token function">IsZero</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// This is the first time we are syncing the pod. Record the latency</span>
+        <span class="token comment">// since kubelet first saw the pod if firstSeenTime is set.</span>
+        metrics<span class="token punctuation">.</span>PodWorkerStartLatency<span class="token punctuation">.</span><span class="token function">Observe</span><span class="token punctuation">(</span>metrics<span class="token punctuation">.</span><span class="token function">SinceInMicroseconds</span><span class="token punctuation">(</span>firstSeenTime<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;First seen time not recorded for pod %q&quot;</span><span class="token punctuation">,</span> pod<span class="token punctuation">.</span>UID<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x901A;&#x8FC7;pod&#x548C;pod status&#x751F;&#x6210;&#x6700;&#x7EC8;&#x7684;api pod status&#x5E76;&#x8BBE;&#x7F6E;pod&#x7684;IP&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Generate final API pod status with pod and status manager status</span>
+apiPodStatus <span class="token operator">:=</span> kl<span class="token punctuation">.</span><span class="token function">generateAPIPodStatus</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> podStatus<span class="token punctuation">)</span>
+<span class="token comment">// The pod IP may be changed in generateAPIPodStatus if the pod is using host network. (See #24576)</span>
+<span class="token comment">// TODO(random-liu): After writing pod spec into container labels, check whether pod is using host network, and</span>
+<span class="token comment">// set pod IP to hostIP directly in runtime.GetPodStatus</span>
+podStatus<span class="token punctuation">.</span>IP <span class="token operator">=</span> apiPodStatus<span class="token punctuation">.</span>PodIP
+</code></pre>
+<p>&#x8BB0;&#x5F55;pod&#x5230;running&#x72B6;&#x6001;&#x7684;&#x65F6;&#x95F4;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Record the time it takes for the pod to become running.</span>
+existingStatus<span class="token punctuation">,</span> ok <span class="token operator">:=</span> kl<span class="token punctuation">.</span>statusManager<span class="token punctuation">.</span><span class="token function">GetPodStatus</span><span class="token punctuation">(</span>pod<span class="token punctuation">.</span>UID<span class="token punctuation">)</span>
+<span class="token keyword">if</span> <span class="token operator">!</span>ok <span class="token operator">||</span> existingStatus<span class="token punctuation">.</span>Phase <span class="token operator">==</span> v1<span class="token punctuation">.</span>PodPending <span class="token operator">&amp;&amp;</span> apiPodStatus<span class="token punctuation">.</span>Phase <span class="token operator">==</span> v1<span class="token punctuation">.</span>PodRunning <span class="token operator">&amp;&amp;</span>
+    <span class="token operator">!</span>firstSeenTime<span class="token punctuation">.</span><span class="token function">IsZero</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    metrics<span class="token punctuation">.</span>PodStartLatency<span class="token punctuation">.</span><span class="token function">Observe</span><span class="token punctuation">(</span>metrics<span class="token punctuation">.</span><span class="token function">SinceInMicroseconds</span><span class="token punctuation">(</span>firstSeenTime<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x5982;&#x679C;pod&#x662F;&#x4E0D;&#x53EF;&#x8FD0;&#x884C;&#x7684;&#xFF0C;&#x5219;&#x66F4;&#x65B0;pod&#x548C;container&#x7684;&#x72B6;&#x6001;&#x548C;&#x76F8;&#x5E94;&#x7684;&#x539F;&#x56E0;&#x3002;</p>
+<pre class="language-"><code class="lang-go">runnable <span class="token operator">:=</span> kl<span class="token punctuation">.</span><span class="token function">canRunPod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span>
+<span class="token keyword">if</span> <span class="token operator">!</span>runnable<span class="token punctuation">.</span>Admit <span class="token punctuation">{</span>
+    <span class="token comment">// Pod is not runnable; update the Pod and Container statuses to why.</span>
+    apiPodStatus<span class="token punctuation">.</span>Reason <span class="token operator">=</span> runnable<span class="token punctuation">.</span>Reason
+    apiPodStatus<span class="token punctuation">.</span>Message <span class="token operator">=</span> runnable<span class="token punctuation">.</span>Message
+    <span class="token comment">// Waiting containers are not creating.</span>
+    <span class="token keyword">const</span> waitingReason <span class="token operator">=</span> <span class="token string">&quot;Blocked&quot;</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> cs <span class="token operator">:=</span> <span class="token keyword">range</span> apiPodStatus<span class="token punctuation">.</span>InitContainerStatuses <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> cs<span class="token punctuation">.</span>State<span class="token punctuation">.</span>Waiting <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            cs<span class="token punctuation">.</span>State<span class="token punctuation">.</span>Waiting<span class="token punctuation">.</span>Reason <span class="token operator">=</span> waitingReason
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> cs <span class="token operator">:=</span> <span class="token keyword">range</span> apiPodStatus<span class="token punctuation">.</span>ContainerStatuses <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> cs<span class="token punctuation">.</span>State<span class="token punctuation">.</span>Waiting <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            cs<span class="token punctuation">.</span>State<span class="token punctuation">.</span>Waiting<span class="token punctuation">.</span>Reason <span class="token operator">=</span> waitingReason
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x5E76;&#x66F4;&#x65B0;status manager&#x4E2D;&#x7684;&#x72B6;&#x6001;&#x4FE1;&#x606F;&#xFF0C;&#x6740;&#x6B7B;&#x4E0D;&#x53EF;&#x8FD0;&#x884C;&#x7684;pod&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Update status in the status manager</span>
+kl<span class="token punctuation">.</span>statusManager<span class="token punctuation">.</span><span class="token function">SetPodStatus</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> apiPodStatus<span class="token punctuation">)</span>
+
+<span class="token comment">// Kill pod if it should not be running</span>
+<span class="token keyword">if</span> <span class="token operator">!</span>runnable<span class="token punctuation">.</span>Admit <span class="token operator">||</span> pod<span class="token punctuation">.</span>DeletionTimestamp <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token operator">||</span> apiPodStatus<span class="token punctuation">.</span>Phase <span class="token operator">==</span> v1<span class="token punctuation">.</span>PodFailed <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> syncErr <span class="token builtin">error</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> kl<span class="token punctuation">.</span><span class="token function">killPod</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> podStatus<span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        kl<span class="token punctuation">.</span>recorder<span class="token punctuation">.</span><span class="token function">Eventf</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToKillPod<span class="token punctuation">,</span> <span class="token string">&quot;error killing pod: %v&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        syncErr <span class="token operator">=</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;error killing pod: %v&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        utilruntime<span class="token punctuation">.</span><span class="token function">HandleError</span><span class="token punctuation">(</span>syncErr<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token operator">!</span>runnable<span class="token punctuation">.</span>Admit <span class="token punctuation">{</span>
+            <span class="token comment">// There was no error killing the pod, but the pod cannot be run.</span>
+            <span class="token comment">// Return an error to signal that the sync loop should back off.</span>
+            syncErr <span class="token operator">=</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;pod cannot be run: %s&quot;</span><span class="token punctuation">,</span> runnable<span class="token punctuation">.</span>Message<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> syncErr
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x5982;&#x679C;&#x7F51;&#x7EDC;&#x63D2;&#x4EF6;&#x8FD8;&#x6CA1;&#x5230;<code>Ready</code>&#x72B6;&#x6001;&#xFF0C;&#x5219;&#x53EA;&#x6709;&#x5728;&#x4F7F;&#x7528;<code>host</code>&#x7F51;&#x7EDC;&#x6A21;&#x5F0F;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#x624D;&#x542F;&#x52A8;pod&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// If the network plugin is not ready, only start the pod if it uses the host network</span>
+<span class="token keyword">if</span> rs <span class="token operator">:=</span> kl<span class="token punctuation">.</span>runtimeState<span class="token punctuation">.</span><span class="token function">networkErrors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">len</span><span class="token punctuation">(</span>rs<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>kubecontainer<span class="token punctuation">.</span><span class="token function">IsHostNetworkPod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    kl<span class="token punctuation">.</span>recorder<span class="token punctuation">.</span><span class="token function">Eventf</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>NetworkNotReady<span class="token punctuation">,</span> <span class="token string">&quot;%s: %v&quot;</span><span class="token punctuation">,</span> NetworkNotReadyErrorMsg<span class="token punctuation">,</span> rs<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;%s: %v&quot;</span><span class="token punctuation">,</span> NetworkNotReadyErrorMsg<span class="token punctuation">,</span> rs<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="23-cgroups">2.3. Cgroups</h2>
+<p>&#x7ED9;pod&#x521B;&#x5EFA;<code>Cgroups</code>&#xFF0C;&#x5982;&#x679C;<code>cgroups-per-qos</code>&#x53C2;&#x6570;&#x5F00;&#x542F;&#xFF0C;&#x5219;&#x7533;&#x8BF7;&#x76F8;&#x5E94;&#x7684;&#x8D44;&#x6E90;&#x3002;&#x5BF9;&#x4E8E;<code>terminated</code>&#x7684;pod&#x4E0D;&#x9700;&#x8981;&#x521B;&#x5EFA;&#x6216;&#x66F4;&#x65B0;pod&#x7684;<code>Cgroups</code>&#x3002;</p>
+<p>&#x5F53;&#x91CD;&#x65B0;&#x542F;&#x52A8;<code>kubelet</code>&#x5E76;&#x4E14;&#x542F;&#x7528;<code>cgroups-per-qos</code>&#x65F6;&#xFF0C;&#x5E94;&#x8BE5;&#x95F4;&#x6B47;&#x6027;&#x5730;&#x7EC8;&#x6B62;&#x6240;&#x6709;pod&#x7684;&#x8FD0;&#x884C;&#x5BB9;&#x5668;&#x5E76;&#x5728;<code>qos cgroup hierarchy</code>&#x4E0B;&#x91CD;&#x65B0;&#x542F;&#x52A8;&#x3002;</p>
+<p>&#x5982;&#x679C;pod&#x7684;cgroup&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x6216;&#x8005;pod&#x7B2C;&#x4E00;&#x6B21;&#x8FD0;&#x884C;&#xFF0C;&#x4E0D;&#x6740;&#x6B7B;pod&#x4E2D;&#x5BB9;&#x5668;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Create Cgroups for the pod and apply resource parameters</span>
+<span class="token comment">// to them if cgroups-per-qos flag is enabled.</span>
+pcm <span class="token operator">:=</span> kl<span class="token punctuation">.</span>containerManager<span class="token punctuation">.</span><span class="token function">NewPodContainerManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">// If pod has already been terminated then we need not create</span>
+<span class="token comment">// or update the pod&apos;s cgroup</span>
+<span class="token keyword">if</span> <span class="token operator">!</span>kl<span class="token punctuation">.</span><span class="token function">podIsTerminated</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// When the kubelet is restarted with the cgroups-per-qos</span>
+    <span class="token comment">// flag enabled, all the pod&apos;s running containers</span>
+    <span class="token comment">// should be killed intermittently and brought back up</span>
+    <span class="token comment">// under the qos cgroup hierarchy.</span>
+    <span class="token comment">// Check if this is the pod&apos;s first sync</span>
+    firstSync <span class="token operator">:=</span> <span class="token boolean">true</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> containerStatus <span class="token operator">:=</span> <span class="token keyword">range</span> apiPodStatus<span class="token punctuation">.</span>ContainerStatuses <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> containerStatus<span class="token punctuation">.</span>State<span class="token punctuation">.</span>Running <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            firstSync <span class="token operator">=</span> <span class="token boolean">false</span>
+            <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">// Don&apos;t kill containers in pod if pod&apos;s cgroups already</span>
+    <span class="token comment">// exists or the pod is running for the first time</span>
+    podKilled <span class="token operator">:=</span> <span class="token boolean">false</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span>pcm<span class="token punctuation">.</span><span class="token function">Exists</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>firstSync <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> err <span class="token operator">:=</span> kl<span class="token punctuation">.</span><span class="token function">killPod</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> podStatus<span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            podKilled <span class="token operator">=</span> <span class="token boolean">true</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token operator">...</span>
+</code></pre>
+<p>&#x5982;&#x679C;pod&#x88AB;&#x6740;&#x6B7B;&#x5E76;&#x4E14;&#x91CD;&#x542F;&#x7B56;&#x7565;&#x662F;<code>Never</code>&#xFF0C;&#x5219;&#x4E0D;&#x521B;&#x5EFA;&#x6216;&#x66F4;&#x65B0;&#x5BF9;&#x5E94;&#x7684;<code>Cgroups</code>&#xFF0C;&#x5426;&#x5219;&#x521B;&#x5EFA;&#x548C;&#x66F4;&#x65B0;pod&#x7684;<code>Cgroups</code>&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Create and Update pod&apos;s Cgroups</span>
+<span class="token comment">// Don&apos;t create cgroups for run once pod if it was killed above</span>
+<span class="token comment">// The current policy is not to restart the run once pods when</span>
+<span class="token comment">// the kubelet is restarted with the new flag as run once pods are</span>
+<span class="token comment">// expected to run only once and if the kubelet is restarted then</span>
+<span class="token comment">// they are not expected to run again.</span>
+<span class="token comment">// We don&apos;t create and apply updates to cgroup if its a run once pod and was killed above</span>
+<span class="token keyword">if</span> <span class="token operator">!</span><span class="token punctuation">(</span>podKilled <span class="token operator">&amp;&amp;</span> pod<span class="token punctuation">.</span>Spec<span class="token punctuation">.</span>RestartPolicy <span class="token operator">==</span> v1<span class="token punctuation">.</span>RestartPolicyNever<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span>pcm<span class="token punctuation">.</span><span class="token function">Exists</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> err <span class="token operator">:=</span> kl<span class="token punctuation">.</span>containerManager<span class="token punctuation">.</span><span class="token function">UpdateQOSCgroups</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Failed to update QoS cgroups while syncing pod: %v&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> err <span class="token operator">:=</span> pcm<span class="token punctuation">.</span><span class="token function">EnsureExists</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            kl<span class="token punctuation">.</span>recorder<span class="token punctuation">.</span><span class="token function">Eventf</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToCreatePodContainer<span class="token punctuation">,</span> <span class="token string">&quot;unable to ensure pod container exists: %v&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;failed to ensure that the pod: %v cgroups exist and are correctly applied: %v&quot;</span><span class="token punctuation">,</span> pod<span class="token punctuation">.</span>UID<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x5176;&#x4E2D;&#x521B;&#x5EFA;<code>Cgroups</code>&#x662F;&#x901A;&#x8FC7;<code>containerManager</code>&#x7684;<code>UpdateQOSCgroups</code>&#x6765;&#x6267;&#x884C;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> err <span class="token operator">:=</span> kl<span class="token punctuation">.</span>containerManager<span class="token punctuation">.</span><span class="token function">UpdateQOSCgroups</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Failed to update QoS cgroups while syncing pod: %v&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="24-mirror-pod">2.4. Mirror Pod</h2>
+<p>&#x5982;&#x679C;pod&#x662F;&#x4E00;&#x4E2A;<code>static pod</code>&#xFF0C;&#x6CA1;&#x6709;&#x5BF9;&#x5E94;&#x7684;<code>mirror pod</code>&#xFF0C;&#x5219;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;<code>mirror pod</code>&#xFF1B;&#x5982;&#x679C;&#x5B58;&#x5728;<code>mirror pod</code>&#x5219;&#x5220;&#x9664;&#x518D;&#x91CD;&#x5EFA;&#x4E00;&#x4E2A;<code>mirror pod</code>&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Create Mirror Pod for Static Pod if it doesn&apos;t already exist</span>
+<span class="token keyword">if</span> kubepod<span class="token punctuation">.</span><span class="token function">IsStaticPod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    podFullName <span class="token operator">:=</span> kubecontainer<span class="token punctuation">.</span><span class="token function">GetPodFullName</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span>
+    deleted <span class="token operator">:=</span> <span class="token boolean">false</span>
+    <span class="token keyword">if</span> mirrorPod <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> mirrorPod<span class="token punctuation">.</span>DeletionTimestamp <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token operator">||</span> <span class="token operator">!</span>kl<span class="token punctuation">.</span>podManager<span class="token punctuation">.</span><span class="token function">IsMirrorPodOf</span><span class="token punctuation">(</span>mirrorPod<span class="token punctuation">,</span> pod<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// The mirror pod is semantically different from the static pod. Remove</span>
+            <span class="token comment">// it. The mirror pod will get recreated later.</span>
+            glog<span class="token punctuation">.</span><span class="token function">Warningf</span><span class="token punctuation">(</span><span class="token string">&quot;Deleting mirror pod %q because it is outdated&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>mirrorPod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> err <span class="token operator">:=</span> kl<span class="token punctuation">.</span>podManager<span class="token punctuation">.</span><span class="token function">DeleteMirrorPod</span><span class="token punctuation">(</span>podFullName<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Failed deleting mirror pod %q: %v&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>mirrorPod<span class="token punctuation">)</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                deleted <span class="token operator">=</span> <span class="token boolean">true</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> mirrorPod <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token operator">||</span> deleted <span class="token punctuation">{</span>
+        node<span class="token punctuation">,</span> err <span class="token operator">:=</span> kl<span class="token punctuation">.</span><span class="token function">GetNode</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token operator">||</span> node<span class="token punctuation">.</span>DeletionTimestamp <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;No need to create a mirror pod, since node %q has been removed from the cluster&quot;</span><span class="token punctuation">,</span> kl<span class="token punctuation">.</span>nodeName<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Creating a mirror pod for static pod %q&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> err <span class="token operator">:=</span> kl<span class="token punctuation">.</span>podManager<span class="token punctuation">.</span><span class="token function">CreateMirrorPod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Failed creating a mirror pod for %q: %v&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="25-makepoddatadirs">2.5. makePodDataDirs</h2>
+<p>&#x7ED9;pod&#x521B;&#x5EFA;&#x6570;&#x636E;&#x76EE;&#x5F55;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Make data directories for the pod</span>
+<span class="token keyword">if</span> err <span class="token operator">:=</span> kl<span class="token punctuation">.</span><span class="token function">makePodDataDirs</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    kl<span class="token punctuation">.</span>recorder<span class="token punctuation">.</span><span class="token function">Eventf</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToMakePodDataDirectories<span class="token punctuation">,</span> <span class="token string">&quot;error making pod data directories: %v&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Unable to make pod data directories for pod %q: %v&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> err
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x5176;&#x4E2D;&#x6570;&#x636E;&#x76EE;&#x5F55;&#x5305;&#x62EC;</p>
+<ul>
+<li><code>PodDir</code>&#xFF1A;{kubelet.rootDirectory}/pods/podUID</li>
+<li><code>PodVolumesDir</code>&#xFF1A;{PodDir}/volumes</li>
+<li><code>PodPluginsDir</code>&#xFF1A;{PodDir}/plugins</li>
+</ul>
+<pre class="language-"><code class="lang-go"><span class="token comment">// makePodDataDirs creates the dirs for the pod datas.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>kl <span class="token operator">*</span>Kubelet<span class="token punctuation">)</span> <span class="token function">makePodDataDirs</span><span class="token punctuation">(</span>pod <span class="token operator">*</span>v1<span class="token punctuation">.</span>Pod<span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+    uid <span class="token operator">:=</span> pod<span class="token punctuation">.</span>UID
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> os<span class="token punctuation">.</span><span class="token function">MkdirAll</span><span class="token punctuation">(</span>kl<span class="token punctuation">.</span><span class="token function">getPodDir</span><span class="token punctuation">(</span>uid<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0750</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>os<span class="token punctuation">.</span><span class="token function">IsExist</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> err
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> os<span class="token punctuation">.</span><span class="token function">MkdirAll</span><span class="token punctuation">(</span>kl<span class="token punctuation">.</span><span class="token function">getPodVolumesDir</span><span class="token punctuation">(</span>uid<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0750</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>os<span class="token punctuation">.</span><span class="token function">IsExist</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> err
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> os<span class="token punctuation">.</span><span class="token function">MkdirAll</span><span class="token punctuation">(</span>kl<span class="token punctuation">.</span><span class="token function">getPodPluginsDir</span><span class="token punctuation">(</span>uid<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0750</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>os<span class="token punctuation">.</span><span class="token function">IsExist</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> err
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="26-mount-volumes">2.6. mount volumes</h2>
+<p>&#x5BF9;&#x975E;<code>terminated</code>&#x72B6;&#x6001;&#x7684;pod&#x6302;&#x8F7D;<code>volume</code>&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Volume manager will not mount volumes for terminated pods</span>
+<span class="token keyword">if</span> <span class="token operator">!</span>kl<span class="token punctuation">.</span><span class="token function">podIsTerminated</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Wait for volumes to attach/mount</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> kl<span class="token punctuation">.</span>volumeManager<span class="token punctuation">.</span><span class="token function">WaitForAttachAndMount</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        kl<span class="token punctuation">.</span>recorder<span class="token punctuation">.</span><span class="token function">Eventf</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedMountVolume<span class="token punctuation">,</span> <span class="token string">&quot;Unable to mount volumes for pod %q: %v&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Unable to mount volumes for pod %q: %v; skipping pod&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> err
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="27-pullsecretsforpod">2.7. PullSecretsForPod</h2>
+<p>&#x83B7;&#x53D6;pod&#x7684;secret&#x6570;&#x636E;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Fetch the pull secrets for the pod</span>
+pullSecrets <span class="token operator">:=</span> kl<span class="token punctuation">.</span><span class="token function">getPullSecretsForPod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span>
+</code></pre>
+<p><code>getPullSecretsForPod</code>&#x5177;&#x4F53;&#x5B9E;&#x73B0;&#x51FD;&#x6570;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// getPullSecretsForPod inspects the Pod and retrieves the referenced pull</span>
+<span class="token comment">// secrets.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>kl <span class="token operator">*</span>Kubelet<span class="token punctuation">)</span> <span class="token function">getPullSecretsForPod</span><span class="token punctuation">(</span>pod <span class="token operator">*</span>v1<span class="token punctuation">.</span>Pod<span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>v1<span class="token punctuation">.</span>Secret <span class="token punctuation">{</span>
+    pullSecrets <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>v1<span class="token punctuation">.</span>Secret<span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> secretRef <span class="token operator">:=</span> <span class="token keyword">range</span> pod<span class="token punctuation">.</span>Spec<span class="token punctuation">.</span>ImagePullSecrets <span class="token punctuation">{</span>
+        secret<span class="token punctuation">,</span> err <span class="token operator">:=</span> kl<span class="token punctuation">.</span>secretManager<span class="token punctuation">.</span><span class="token function">GetSecret</span><span class="token punctuation">(</span>pod<span class="token punctuation">.</span>Namespace<span class="token punctuation">,</span> secretRef<span class="token punctuation">.</span>Name<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            glog<span class="token punctuation">.</span><span class="token function">Warningf</span><span class="token punctuation">(</span><span class="token string">&quot;Unable to retrieve pull secret %s/%s for %s/%s due to %v.  The image pull may not succeed.&quot;</span><span class="token punctuation">,</span> pod<span class="token punctuation">.</span>Namespace<span class="token punctuation">,</span> secretRef<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> pod<span class="token punctuation">.</span>Namespace<span class="token punctuation">,</span> pod<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+            <span class="token keyword">continue</span>
+        <span class="token punctuation">}</span>
+
+        pullSecrets <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>pullSecrets<span class="token punctuation">,</span> <span class="token operator">*</span>secret<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> pullSecrets
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="28-containerruntimesyncpod">2.8. containerRuntime.SyncPod</h2>
+<p>&#x8C03;&#x7528;<code>container runtime</code>&#x7684;<code>SyncPod</code>&#x51FD;&#x6570;&#xFF0C;&#x6267;&#x884C;&#x76F8;&#x5173;pod&#x64CD;&#x4F5C;&#xFF0C;&#x7531;&#x6B64;<code>kubelet.syncPod</code>&#x7684;&#x64CD;&#x4F5C;&#x903B;&#x8F91;&#x8F6C;&#x5165;<code>containerRuntime.SyncPod</code>&#x51FD;&#x6570;&#x4E2D;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Call the container runtime&apos;s SyncPod callback</span>
+result <span class="token operator">:=</span> kl<span class="token punctuation">.</span>containerRuntime<span class="token punctuation">.</span><span class="token function">SyncPod</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> apiPodStatus<span class="token punctuation">,</span> podStatus<span class="token punctuation">,</span> pullSecrets<span class="token punctuation">,</span> kl<span class="token punctuation">.</span>backOff<span class="token punctuation">)</span>
+kl<span class="token punctuation">.</span>reasonCache<span class="token punctuation">.</span><span class="token function">Update</span><span class="token punctuation">(</span>pod<span class="token punctuation">.</span>UID<span class="token punctuation">,</span> result<span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">:=</span> result<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Do not return error if the only failures were pods in backoff</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> r <span class="token operator">:=</span> <span class="token keyword">range</span> result<span class="token punctuation">.</span>SyncResults <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> r<span class="token punctuation">.</span>Error <span class="token operator">!=</span> kubecontainer<span class="token punctuation">.</span>ErrCrashLoopBackOff <span class="token operator">&amp;&amp;</span> r<span class="token punctuation">.</span>Error <span class="token operator">!=</span> images<span class="token punctuation">.</span>ErrImagePullBackOff <span class="token punctuation">{</span>
+            <span class="token comment">// Do not record an event here, as we keep all event logging for sync pod failures</span>
+            <span class="token comment">// local to container runtime so we get better errors</span>
+            <span class="token keyword">return</span> err
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="3-runtimesyncpod">3. <a href="https://github.com/kubernetes/kubernetes/blob/v1.12.0/pkg/kubelet/kuberuntime/kuberuntime_manager.go#L578" target="_blank">Runtime.SyncPod</a></h1>
+<p><code>SyncPod</code>&#x4E3B;&#x8981;&#x6267;&#x884C;sync&#x64CD;&#x4F5C;&#x4F7F;&#x5F97;&#x8FD0;&#x884C;&#x7684;pod&#x8FBE;&#x5230;&#x671F;&#x671B;&#x72B6;&#x6001;&#x7684;pod&#x3002;&#x4E3B;&#x8981;&#x6267;&#x884C;&#x4EE5;&#x4E0B;&#x64CD;&#x4F5C;&#xFF1A;</p>
+<ul>
+<li>&#x8BA1;&#x7B97;<code>sandbox</code>&#x548C;<code>container</code>&#x7684;&#x53D8;&#x5316;&#x3002;</li>
+<li>&#x5FC5;&#x8981;&#x7684;&#x65F6;&#x5019;&#x6740;&#x6B7B;pod&#x3002;</li>
+<li>&#x6740;&#x6B7B;&#x6240;&#x6709;&#x4E0D;&#x9700;&#x8981;&#x8FD0;&#x884C;&#x7684;<code>container</code>&#x3002;</li>
+<li>&#x5FC5;&#x8981;&#x65F6;&#x521B;&#x5EFA;<code>sandbox</code>&#x3002;</li>
+<li>&#x521B;&#x5EFA;<code>init container</code>&#x3002;</li>
+<li>&#x521B;&#x5EFA;&#x6B63;&#x5E38;&#x7684;<code>container</code>&#x3002;</li>
+</ul>
+<blockquote>
+<p>Runtime.SyncPod&#x90E8;&#x5206;&#x4EE3;&#x7801;&#x4F4D;&#x4E8E;pkg/kubelet/kuberuntime/kuberuntime_manager.go</p>
+</blockquote>
+<h2 id="31-computepodactions">3.1. computePodActions</h2>
+<p>&#x8BA1;&#x7B97;<code>sandbox</code>&#x548C;<code>container</code>&#x7684;&#x53D8;&#x5316;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Step 1: Compute sandbox and container changes.</span>
+podContainerChanges <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">computePodActions</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> podStatus<span class="token punctuation">)</span>
+glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;computePodActions got %+v for pod %q&quot;</span><span class="token punctuation">,</span> podContainerChanges<span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">if</span> podContainerChanges<span class="token punctuation">.</span>CreateSandbox <span class="token punctuation">{</span>
+    ref<span class="token punctuation">,</span> err <span class="token operator">:=</span> ref<span class="token punctuation">.</span><span class="token function">GetReference</span><span class="token punctuation">(</span>legacyscheme<span class="token punctuation">.</span>Scheme<span class="token punctuation">,</span> pod<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Couldn&apos;t make a ref to pod %q: &apos;%v&apos;&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> podContainerChanges<span class="token punctuation">.</span>SandboxID <span class="token operator">!=</span> <span class="token string">&quot;&quot;</span> <span class="token punctuation">{</span>
+        m<span class="token punctuation">.</span>recorder<span class="token punctuation">.</span><span class="token function">Eventf</span><span class="token punctuation">(</span>ref<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeNormal<span class="token punctuation">,</span> events<span class="token punctuation">.</span>SandboxChanged<span class="token punctuation">,</span> <span class="token string">&quot;Pod sandbox changed, it will be killed and re-created.&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;SyncPod received new pod %q, will create a sandbox for it&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="32-killpodwithsyncresult">3.2. killPodWithSyncResult</h2>
+<p>&#x5FC5;&#x8981;&#x7684;&#x65F6;&#x5019;&#x6740;&#x6B7B;pod&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Step 2: Kill the pod if the sandbox has changed.</span>
+<span class="token keyword">if</span> podContainerChanges<span class="token punctuation">.</span>KillPod <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span>podContainerChanges<span class="token punctuation">.</span>CreateSandbox <span class="token punctuation">{</span>
+        glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Stopping PodSandbox for %q because all other containers are dead.&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Stopping PodSandbox for %q, will start new one&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    killResult <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">killPodWithSyncResult</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> kubecontainer<span class="token punctuation">.</span><span class="token function">ConvertPodStatusToRunningPod</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>runtimeName<span class="token punctuation">,</span> podStatus<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">)</span>
+    result<span class="token punctuation">.</span><span class="token function">AddPodSyncResult</span><span class="token punctuation">(</span>killResult<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> killResult<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;killPodWithSyncResult failed: %v&quot;</span><span class="token punctuation">,</span> killResult<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> podContainerChanges<span class="token punctuation">.</span>CreateSandbox <span class="token punctuation">{</span>
+        m<span class="token punctuation">.</span><span class="token function">purgeInitContainers</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> podStatus<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="33-killcontainer">3.3. killContainer</h2>
+<p>&#x6740;&#x6B7B;&#x6240;&#x6709;&#x4E0D;&#x9700;&#x8981;&#x8FD0;&#x884C;&#x7684;<code>container</code>&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Step 3: kill any running containers in this pod which are not to keep.</span>
+<span class="token keyword">for</span> containerID<span class="token punctuation">,</span> containerInfo <span class="token operator">:=</span> <span class="token keyword">range</span> podContainerChanges<span class="token punctuation">.</span>ContainersToKill <span class="token punctuation">{</span>
+    glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Killing unwanted container %q(id=%q) for pod %q&quot;</span><span class="token punctuation">,</span> containerInfo<span class="token punctuation">.</span>name<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    killContainerResult <span class="token operator">:=</span> kubecontainer<span class="token punctuation">.</span><span class="token function">NewSyncResult</span><span class="token punctuation">(</span>kubecontainer<span class="token punctuation">.</span>KillContainer<span class="token punctuation">,</span> containerInfo<span class="token punctuation">.</span>name<span class="token punctuation">)</span>
+    result<span class="token punctuation">.</span><span class="token function">AddSyncResult</span><span class="token punctuation">(</span>killContainerResult<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">killContainer</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> containerInfo<span class="token punctuation">.</span>name<span class="token punctuation">,</span> containerInfo<span class="token punctuation">.</span>message<span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        killContainerResult<span class="token punctuation">.</span><span class="token function">Fail</span><span class="token punctuation">(</span>kubecontainer<span class="token punctuation">.</span>ErrKillContainer<span class="token punctuation">,</span> err<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;killContainer %q(id=%q) for pod %q failed: %v&quot;</span><span class="token punctuation">,</span> containerInfo<span class="token punctuation">.</span>name<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="34-createpodsandbox">3.4. createPodSandbox</h2>
+<p>&#x5FC5;&#x8981;&#x65F6;&#x521B;&#x5EFA;<code>sandbox</code>&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Step 4: Create a sandbox for the pod if necessary.</span>
+<span class="token operator">...</span>
+glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Creating sandbox for pod %q&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+createSandboxResult <span class="token operator">:=</span> kubecontainer<span class="token punctuation">.</span><span class="token function">NewSyncResult</span><span class="token punctuation">(</span>kubecontainer<span class="token punctuation">.</span>CreatePodSandbox<span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+result<span class="token punctuation">.</span><span class="token function">AddSyncResult</span><span class="token punctuation">(</span>createSandboxResult<span class="token punctuation">)</span>
+podSandboxID<span class="token punctuation">,</span> msg<span class="token punctuation">,</span> err <span class="token operator">=</span> m<span class="token punctuation">.</span><span class="token function">createPodSandbox</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> podContainerChanges<span class="token punctuation">.</span>Attempt<span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    createSandboxResult<span class="token punctuation">.</span><span class="token function">Fail</span><span class="token punctuation">(</span>kubecontainer<span class="token punctuation">.</span>ErrCreatePodSandbox<span class="token punctuation">,</span> msg<span class="token punctuation">)</span>
+    glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;createPodSandbox for pod %q failed: %v&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    ref<span class="token punctuation">,</span> referr <span class="token operator">:=</span> ref<span class="token punctuation">.</span><span class="token function">GetReference</span><span class="token punctuation">(</span>legacyscheme<span class="token punctuation">.</span>Scheme<span class="token punctuation">,</span> pod<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> referr <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Couldn&apos;t make a ref to pod %q: &apos;%v&apos;&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> referr<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    m<span class="token punctuation">.</span>recorder<span class="token punctuation">.</span><span class="token function">Eventf</span><span class="token punctuation">(</span>ref<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedCreatePodSandBox<span class="token punctuation">,</span> <span class="token string">&quot;Failed create pod sandbox: %v&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token keyword">return</span>
+<span class="token punctuation">}</span>
+glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Created PodSandbox %q for pod %q&quot;</span><span class="token punctuation">,</span> podSandboxID<span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<h2 id="35-start-init-container">3.5. start init container</h2>
+<p>&#x521B;&#x5EFA;<code>init container</code>&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Step 5: start the init container.</span>
+<span class="token keyword">if</span> container <span class="token operator">:=</span> podContainerChanges<span class="token punctuation">.</span>NextInitContainerToStart<span class="token punctuation">;</span> container <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Start the next init container.</span>
+    startContainerResult <span class="token operator">:=</span> kubecontainer<span class="token punctuation">.</span><span class="token function">NewSyncResult</span><span class="token punctuation">(</span>kubecontainer<span class="token punctuation">.</span>StartContainer<span class="token punctuation">,</span> container<span class="token punctuation">.</span>Name<span class="token punctuation">)</span>
+    result<span class="token punctuation">.</span><span class="token function">AddSyncResult</span><span class="token punctuation">(</span>startContainerResult<span class="token punctuation">)</span>
+    isInBackOff<span class="token punctuation">,</span> msg<span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">doBackOff</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> podStatus<span class="token punctuation">,</span> backOff<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> isInBackOff <span class="token punctuation">{</span>
+        startContainerResult<span class="token punctuation">.</span><span class="token function">Fail</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> msg<span class="token punctuation">)</span>
+        glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Backing Off restarting init container %+v in pod %v&quot;</span><span class="token punctuation">,</span> container<span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
+
+    glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Creating init container %+v in pod %v&quot;</span><span class="token punctuation">,</span> container<span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> msg<span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">startContainer</span><span class="token punctuation">(</span>podSandboxID<span class="token punctuation">,</span> podSandboxConfig<span class="token punctuation">,</span> container<span class="token punctuation">,</span> pod<span class="token punctuation">,</span> podStatus<span class="token punctuation">,</span> pullSecrets<span class="token punctuation">,</span> podIP<span class="token punctuation">,</span> kubecontainer<span class="token punctuation">.</span>ContainerTypeInit<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        startContainerResult<span class="token punctuation">.</span><span class="token function">Fail</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> msg<span class="token punctuation">)</span>
+        utilruntime<span class="token punctuation">.</span><span class="token function">HandleError</span><span class="token punctuation">(</span>fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;init container start failed: %v: %s&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">,</span> msg<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Successfully started the container; clear the entry in the failure</span>
+    glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Completed init container %q for pod %q&quot;</span><span class="token punctuation">,</span> container<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="36-start-containers">3.6. start containers</h2>
+<p>&#x521B;&#x5EFA;&#x6B63;&#x5E38;&#x7684;<code>container</code>&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Step 6: start containers in podContainerChanges.ContainersToStart.</span>
+<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> idx <span class="token operator">:=</span> <span class="token keyword">range</span> podContainerChanges<span class="token punctuation">.</span>ContainersToStart <span class="token punctuation">{</span>
+    container <span class="token operator">:=</span> <span class="token operator">&amp;</span>pod<span class="token punctuation">.</span>Spec<span class="token punctuation">.</span>Containers<span class="token punctuation">[</span>idx<span class="token punctuation">]</span>
+    startContainerResult <span class="token operator">:=</span> kubecontainer<span class="token punctuation">.</span><span class="token function">NewSyncResult</span><span class="token punctuation">(</span>kubecontainer<span class="token punctuation">.</span>StartContainer<span class="token punctuation">,</span> container<span class="token punctuation">.</span>Name<span class="token punctuation">)</span>
+    result<span class="token punctuation">.</span><span class="token function">AddSyncResult</span><span class="token punctuation">(</span>startContainerResult<span class="token punctuation">)</span>
+
+    isInBackOff<span class="token punctuation">,</span> msg<span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">doBackOff</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> podStatus<span class="token punctuation">,</span> backOff<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> isInBackOff <span class="token punctuation">{</span>
+        startContainerResult<span class="token punctuation">.</span><span class="token function">Fail</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> msg<span class="token punctuation">)</span>
+        glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Backing Off restarting container %+v in pod %v&quot;</span><span class="token punctuation">,</span> container<span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">continue</span>
+    <span class="token punctuation">}</span>
+
+    glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Creating container %+v in pod %v&quot;</span><span class="token punctuation">,</span> container<span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token comment">// &#x901A;&#x8FC7;startContainer&#x6765;&#x8FD0;&#x884C;&#x5BB9;&#x5668;</span>
+    <span class="token keyword">if</span> msg<span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">startContainer</span><span class="token punctuation">(</span>podSandboxID<span class="token punctuation">,</span> podSandboxConfig<span class="token punctuation">,</span> container<span class="token punctuation">,</span> pod<span class="token punctuation">,</span> podStatus<span class="token punctuation">,</span> pullSecrets<span class="token punctuation">,</span> podIP<span class="token punctuation">,</span> kubecontainer<span class="token punctuation">.</span>ContainerTypeRegular<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        startContainerResult<span class="token punctuation">.</span><span class="token function">Fail</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> msg<span class="token punctuation">)</span>
+        <span class="token comment">// known errors that are logged in other places are logged at higher levels here to avoid</span>
+        <span class="token comment">// repetitive log spam</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> err <span class="token operator">==</span> images<span class="token punctuation">.</span>ErrImagePullBackOff<span class="token punctuation">:</span>
+            glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;container start failed: %v: %s&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">,</span> msg<span class="token punctuation">)</span>
+        <span class="token keyword">default</span><span class="token punctuation">:</span>
+            utilruntime<span class="token punctuation">.</span><span class="token function">HandleError</span><span class="token punctuation">(</span>fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;container start failed: %v: %s&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">,</span> msg<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">continue</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="4-startcontainer">4. <a href="https://github.com/kubernetes/kubernetes/blob/v1.12.0/pkg/kubelet/kuberuntime/kuberuntime_container.go#L89" target="_blank">startContainer</a></h1>
+<p><code>startContainer</code>&#x542F;&#x52A8;&#x4E00;&#x4E2A;&#x5BB9;&#x5668;&#x5E76;&#x8FD4;&#x56DE;&#x662F;&#x5426;&#x6210;&#x529F;&#x3002;</p>
+<p>&#x4E3B;&#x8981;&#x5305;&#x62EC;&#x4EE5;&#x4E0B;&#x51E0;&#x4E2A;&#x6B65;&#x9AA4;&#xFF1A;</p>
+<ol>
+<li>&#x62C9;&#x53D6;&#x955C;&#x50CF;</li>
+<li>&#x521B;&#x5EFA;&#x5BB9;&#x5668;</li>
+<li>&#x542F;&#x52A8;&#x5BB9;&#x5668;</li>
+<li>&#x8FD0;&#x884C;post start lifecycle hooks(&#x5982;&#x679C;&#x6709;&#x8BBE;&#x7F6E;&#x6B64;&#x9879;)</li>
+</ol>
+<p><code>startContainer</code>&#x5B8C;&#x6574;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<blockquote>
+<p>startContainer&#x90E8;&#x5206;&#x4EE3;&#x7801;&#x4F4D;&#x4E8E;pkg/kubelet/kuberuntime/kuberuntime_container.go</p>
+</blockquote>
+<pre class="language-"><code class="lang-go"><span class="token comment">// startContainer starts a container and returns a message indicates why it is failed on error.</span>
+<span class="token comment">// It starts the container through the following steps:</span>
+<span class="token comment">// * pull the image</span>
+<span class="token comment">// * create the container</span>
+<span class="token comment">// * start the container</span>
+<span class="token comment">// * run the post start lifecycle hooks (if applicable)</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>kubeGenericRuntimeManager<span class="token punctuation">)</span> <span class="token function">startContainer</span><span class="token punctuation">(</span>podSandboxID <span class="token builtin">string</span><span class="token punctuation">,</span> podSandboxConfig <span class="token operator">*</span>runtimeapi<span class="token punctuation">.</span>PodSandboxConfig<span class="token punctuation">,</span> container <span class="token operator">*</span>v1<span class="token punctuation">.</span>Container<span class="token punctuation">,</span> pod <span class="token operator">*</span>v1<span class="token punctuation">.</span>Pod<span class="token punctuation">,</span> podStatus <span class="token operator">*</span>kubecontainer<span class="token punctuation">.</span>PodStatus<span class="token punctuation">,</span> pullSecrets <span class="token punctuation">[</span><span class="token punctuation">]</span>v1<span class="token punctuation">.</span>Secret<span class="token punctuation">,</span> podIP <span class="token builtin">string</span><span class="token punctuation">,</span> containerType kubecontainer<span class="token punctuation">.</span>ContainerType<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Step 1: pull the image.</span>
+    imageRef<span class="token punctuation">,</span> msg<span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span>imagePuller<span class="token punctuation">.</span><span class="token function">EnsureImageExists</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> pullSecrets<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToCreateContainer<span class="token punctuation">,</span> <span class="token string">&quot;Error: %v&quot;</span><span class="token punctuation">,</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> msg<span class="token punctuation">,</span> err
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Step 2: create the container.</span>
+    ref<span class="token punctuation">,</span> err <span class="token operator">:=</span> kubecontainer<span class="token punctuation">.</span><span class="token function">GenerateContainerRef</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Can&apos;t make a ref to pod %q, container %v: %v&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> container<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Generating ref for container %s: %#v&quot;</span><span class="token punctuation">,</span> container<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> ref<span class="token punctuation">)</span>
+
+    <span class="token comment">// For a new container, the RestartCount should be 0</span>
+    restartCount <span class="token operator">:=</span> <span class="token number">0</span>
+    containerStatus <span class="token operator">:=</span> podStatus<span class="token punctuation">.</span><span class="token function">FindContainerStatusByName</span><span class="token punctuation">(</span>container<span class="token punctuation">.</span>Name<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> containerStatus <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        restartCount <span class="token operator">=</span> containerStatus<span class="token punctuation">.</span>RestartCount <span class="token operator">+</span> <span class="token number">1</span>
+    <span class="token punctuation">}</span>
+
+    containerConfig<span class="token punctuation">,</span> cleanupAction<span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">generateContainerConfig</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> pod<span class="token punctuation">,</span> restartCount<span class="token punctuation">,</span> podIP<span class="token punctuation">,</span> imageRef<span class="token punctuation">,</span> containerType<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> cleanupAction <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token keyword">defer</span> <span class="token function">cleanupAction</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToCreateContainer<span class="token punctuation">,</span> <span class="token string">&quot;Error: %v&quot;</span><span class="token punctuation">,</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">,</span> ErrCreateContainerConfig
+    <span class="token punctuation">}</span>
+
+    containerID<span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span>runtimeService<span class="token punctuation">.</span><span class="token function">CreateContainer</span><span class="token punctuation">(</span>podSandboxID<span class="token punctuation">,</span> containerConfig<span class="token punctuation">,</span> podSandboxConfig<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToCreateContainer<span class="token punctuation">,</span> <span class="token string">&quot;Error: %v&quot;</span><span class="token punctuation">,</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">,</span> ErrCreateContainer
+    <span class="token punctuation">}</span>
+    err <span class="token operator">=</span> m<span class="token punctuation">.</span>internalLifecycle<span class="token punctuation">.</span><span class="token function">PreStartContainer</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToStartContainer<span class="token punctuation">,</span> <span class="token string">&quot;Internal PreStartContainer hook failed: %v&quot;</span><span class="token punctuation">,</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">,</span> ErrPreStartHook
+    <span class="token punctuation">}</span>
+    m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeNormal<span class="token punctuation">,</span> events<span class="token punctuation">.</span>CreatedContainer<span class="token punctuation">,</span> <span class="token string">&quot;Created container&quot;</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> ref <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        m<span class="token punctuation">.</span>containerRefManager<span class="token punctuation">.</span><span class="token function">SetRef</span><span class="token punctuation">(</span>kubecontainer<span class="token punctuation">.</span>ContainerID<span class="token punctuation">{</span>
+            Type<span class="token punctuation">:</span> m<span class="token punctuation">.</span>runtimeName<span class="token punctuation">,</span>
+            ID<span class="token punctuation">:</span>   containerID<span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> ref<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Step 3: start the container.</span>
+    err <span class="token operator">=</span> m<span class="token punctuation">.</span>runtimeService<span class="token punctuation">.</span><span class="token function">StartContainer</span><span class="token punctuation">(</span>containerID<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToStartContainer<span class="token punctuation">,</span> <span class="token string">&quot;Error: %v&quot;</span><span class="token punctuation">,</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">,</span> kubecontainer<span class="token punctuation">.</span>ErrRunContainer
+    <span class="token punctuation">}</span>
+    m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeNormal<span class="token punctuation">,</span> events<span class="token punctuation">.</span>StartedContainer<span class="token punctuation">,</span> <span class="token string">&quot;Started container&quot;</span><span class="token punctuation">)</span>
+
+    <span class="token comment">// Symlink container logs to the legacy container log location for cluster logging</span>
+    <span class="token comment">// support.</span>
+    <span class="token comment">// TODO(random-liu): Remove this after cluster logging supports CRI container log path.</span>
+    containerMeta <span class="token operator">:=</span> containerConfig<span class="token punctuation">.</span><span class="token function">GetMetadata</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    sandboxMeta <span class="token operator">:=</span> podSandboxConfig<span class="token punctuation">.</span><span class="token function">GetMetadata</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    legacySymlink <span class="token operator">:=</span> <span class="token function">legacyLogSymlink</span><span class="token punctuation">(</span>containerID<span class="token punctuation">,</span> containerMeta<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> sandboxMeta<span class="token punctuation">.</span>Name<span class="token punctuation">,</span>
+        sandboxMeta<span class="token punctuation">.</span>Namespace<span class="token punctuation">)</span>
+    containerLog <span class="token operator">:=</span> filepath<span class="token punctuation">.</span><span class="token function">Join</span><span class="token punctuation">(</span>podSandboxConfig<span class="token punctuation">.</span>LogDirectory<span class="token punctuation">,</span> containerConfig<span class="token punctuation">.</span>LogPath<span class="token punctuation">)</span>
+    <span class="token comment">// only create legacy symlink if containerLog path exists (or the error is not IsNotExist).</span>
+    <span class="token comment">// Because if containerLog path does not exist, only dandling legacySymlink is created.</span>
+    <span class="token comment">// This dangling legacySymlink is later removed by container gc, so it does not make sense</span>
+    <span class="token comment">// to create it in the first place. it happens when journald logging driver is used with docker.</span>
+    <span class="token keyword">if</span> <span class="token boolean">_</span><span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span>osInterface<span class="token punctuation">.</span><span class="token function">Stat</span><span class="token punctuation">(</span>containerLog<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">!</span>os<span class="token punctuation">.</span><span class="token function">IsNotExist</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span>osInterface<span class="token punctuation">.</span><span class="token function">Symlink</span><span class="token punctuation">(</span>containerLog<span class="token punctuation">,</span> legacySymlink<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Failed to create legacy symbolic link %q to container %q log %q: %v&quot;</span><span class="token punctuation">,</span>
+                legacySymlink<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> containerLog<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Step 4: execute the post start hook.</span>
+    <span class="token keyword">if</span> container<span class="token punctuation">.</span>Lifecycle <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token operator">&amp;&amp;</span> container<span class="token punctuation">.</span>Lifecycle<span class="token punctuation">.</span>PostStart <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        kubeContainerID <span class="token operator">:=</span> kubecontainer<span class="token punctuation">.</span>ContainerID<span class="token punctuation">{</span>
+            Type<span class="token punctuation">:</span> m<span class="token punctuation">.</span>runtimeName<span class="token punctuation">,</span>
+            ID<span class="token punctuation">:</span>   containerID<span class="token punctuation">,</span>
+        <span class="token punctuation">}</span>
+        msg<span class="token punctuation">,</span> handlerErr <span class="token operator">:=</span> m<span class="token punctuation">.</span>runner<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span>kubeContainerID<span class="token punctuation">,</span> pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> container<span class="token punctuation">.</span>Lifecycle<span class="token punctuation">.</span>PostStart<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> handlerErr <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> kubeContainerID<span class="token punctuation">.</span>ID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedPostStartHook<span class="token punctuation">,</span> msg<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">killContainer</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> kubeContainerID<span class="token punctuation">,</span> container<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> <span class="token string">&quot;FailedPostStartHook&quot;</span><span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Failed to kill container %q(id=%q) in pod %q: %v, %v&quot;</span><span class="token punctuation">,</span>
+                    container<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> kubeContainerID<span class="token punctuation">.</span><span class="token function">String</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> ErrPostStartHook<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">return</span> msg<span class="token punctuation">,</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;%s: %v&quot;</span><span class="token punctuation">,</span> ErrPostStartHook<span class="token punctuation">,</span> handlerErr<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x4EE5;&#x4E0B;&#x5BF9;<code>startContainer</code>&#x5206;&#x6BB5;&#x5206;&#x6790;&#xFF1A;</p>
+<h2 id="41-pull-image">4.1. pull image</h2>
+<p>&#x901A;&#x8FC7;<code>EnsureImageExists</code>&#x65B9;&#x6CD5;&#x62C9;&#x53D6;&#x62C9;&#x53D6;&#x6307;&#x5B9A;pod&#x5BB9;&#x5668;&#x7684;&#x955C;&#x50CF;&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;&#x955C;&#x50CF;&#x4FE1;&#x606F;&#x548C;&#x9519;&#x8BEF;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Step 1: pull the image.</span>
+imageRef<span class="token punctuation">,</span> msg<span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span>imagePuller<span class="token punctuation">.</span><span class="token function">EnsureImageExists</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> pullSecrets<span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToCreateContainer<span class="token punctuation">,</span> <span class="token string">&quot;Error: %v&quot;</span><span class="token punctuation">,</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> msg<span class="token punctuation">,</span> err
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="42-createcontainer">4.2. CreateContainer</h2>
+<p>&#x9996;&#x5148;&#x751F;&#x6210;container&#x7684;<code>*v1.ObjectReference</code>&#x5BF9;&#x8C61;&#xFF0C;&#x8BE5;&#x5BF9;&#x8C61;&#x5305;&#x62EC;container&#x7684;&#x76F8;&#x5173;&#x4FE1;&#x606F;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Step 2: create the container.</span>
+ref<span class="token punctuation">,</span> err <span class="token operator">:=</span> kubecontainer<span class="token punctuation">.</span><span class="token function">GenerateContainerRef</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Can&apos;t make a ref to pod %q, container %v: %v&quot;</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> container<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+glog<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Infof</span><span class="token punctuation">(</span><span class="token string">&quot;Generating ref for container %s: %#v&quot;</span><span class="token punctuation">,</span> container<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> ref<span class="token punctuation">)</span>
+</code></pre>
+<p>&#x7EDF;&#x8BA1;container&#x7684;&#x91CD;&#x542F;&#x6B21;&#x6570;&#xFF0C;&#x65B0;&#x7684;&#x5BB9;&#x5668;&#x9ED8;&#x8BA4;&#x91CD;&#x542F;&#x6B21;&#x6570;&#x4E3A;0&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// For a new container, the RestartCount should be 0</span>
+restartCount <span class="token operator">:=</span> <span class="token number">0</span>
+containerStatus <span class="token operator">:=</span> podStatus<span class="token punctuation">.</span><span class="token function">FindContainerStatusByName</span><span class="token punctuation">(</span>container<span class="token punctuation">.</span>Name<span class="token punctuation">)</span>
+<span class="token keyword">if</span> containerStatus <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    restartCount <span class="token operator">=</span> containerStatus<span class="token punctuation">.</span>RestartCount <span class="token operator">+</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x751F;&#x6210;container&#x7684;&#x914D;&#x7F6E;&#x3002;</p>
+<pre class="language-"><code class="lang-go">containerConfig<span class="token punctuation">,</span> cleanupAction<span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">generateContainerConfig</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> pod<span class="token punctuation">,</span> restartCount<span class="token punctuation">,</span> podIP<span class="token punctuation">,</span> imageRef<span class="token punctuation">,</span> containerType<span class="token punctuation">)</span>
+<span class="token keyword">if</span> cleanupAction <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    <span class="token keyword">defer</span> <span class="token function">cleanupAction</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToCreateContainer<span class="token punctuation">,</span> <span class="token string">&quot;Error: %v&quot;</span><span class="token punctuation">,</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">,</span> ErrCreateContainerConfig
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x8C03;&#x7528;<code>runtimeService</code>&#xFF0C;&#x6267;&#x884C;<code>CreateContainer</code>&#x7684;&#x64CD;&#x4F5C;&#x3002;</p>
+<pre class="language-"><code class="lang-go">containerID<span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span>runtimeService<span class="token punctuation">.</span><span class="token function">CreateContainer</span><span class="token punctuation">(</span>podSandboxID<span class="token punctuation">,</span> containerConfig<span class="token punctuation">,</span> podSandboxConfig<span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToCreateContainer<span class="token punctuation">,</span> <span class="token string">&quot;Error: %v&quot;</span><span class="token punctuation">,</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">,</span> ErrCreateContainer
+<span class="token punctuation">}</span>
+err <span class="token operator">=</span> m<span class="token punctuation">.</span>internalLifecycle<span class="token punctuation">.</span><span class="token function">PreStartContainer</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToStartContainer<span class="token punctuation">,</span> <span class="token string">&quot;Internal PreStartContainer hook failed: %v&quot;</span><span class="token punctuation">,</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">,</span> ErrPreStartHook
+<span class="token punctuation">}</span>
+m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeNormal<span class="token punctuation">,</span> events<span class="token punctuation">.</span>CreatedContainer<span class="token punctuation">,</span> <span class="token string">&quot;Created container&quot;</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> ref <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    m<span class="token punctuation">.</span>containerRefManager<span class="token punctuation">.</span><span class="token function">SetRef</span><span class="token punctuation">(</span>kubecontainer<span class="token punctuation">.</span>ContainerID<span class="token punctuation">{</span>
+        Type<span class="token punctuation">:</span> m<span class="token punctuation">.</span>runtimeName<span class="token punctuation">,</span>
+        ID<span class="token punctuation">:</span>   containerID<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> ref<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="43-startcontainer">4.3. StartContainer</h2>
+<p>&#x6267;&#x884C;<code>runtimeService</code>&#x7684;<code>StartContainer</code>&#x65B9;&#x6CD5;&#xFF0C;&#x6765;&#x542F;&#x52A8;&#x5BB9;&#x5668;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Step 3: start the container.</span>
+err <span class="token operator">=</span> m<span class="token punctuation">.</span>runtimeService<span class="token punctuation">.</span><span class="token function">StartContainer</span><span class="token punctuation">(</span>containerID<span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedToStartContainer<span class="token punctuation">,</span> <span class="token string">&quot;Error: %v&quot;</span><span class="token punctuation">,</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> grpc<span class="token punctuation">.</span><span class="token function">ErrorDesc</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">,</span> kubecontainer<span class="token punctuation">.</span>ErrRunContainer
+<span class="token punctuation">}</span>
+m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeNormal<span class="token punctuation">,</span> events<span class="token punctuation">.</span>StartedContainer<span class="token punctuation">,</span> <span class="token string">&quot;Started container&quot;</span><span class="token punctuation">)</span>
+
+<span class="token comment">// Symlink container logs to the legacy container log location for cluster logging</span>
+<span class="token comment">// support.</span>
+<span class="token comment">// TODO(random-liu): Remove this after cluster logging supports CRI container log path.</span>
+containerMeta <span class="token operator">:=</span> containerConfig<span class="token punctuation">.</span><span class="token function">GetMetadata</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+sandboxMeta <span class="token operator">:=</span> podSandboxConfig<span class="token punctuation">.</span><span class="token function">GetMetadata</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+legacySymlink <span class="token operator">:=</span> <span class="token function">legacyLogSymlink</span><span class="token punctuation">(</span>containerID<span class="token punctuation">,</span> containerMeta<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> sandboxMeta<span class="token punctuation">.</span>Name<span class="token punctuation">,</span>
+    sandboxMeta<span class="token punctuation">.</span>Namespace<span class="token punctuation">)</span>
+containerLog <span class="token operator">:=</span> filepath<span class="token punctuation">.</span><span class="token function">Join</span><span class="token punctuation">(</span>podSandboxConfig<span class="token punctuation">.</span>LogDirectory<span class="token punctuation">,</span> containerConfig<span class="token punctuation">.</span>LogPath<span class="token punctuation">)</span>
+<span class="token comment">// only create legacy symlink if containerLog path exists (or the error is not IsNotExist).</span>
+<span class="token comment">// Because if containerLog path does not exist, only dandling legacySymlink is created.</span>
+<span class="token comment">// This dangling legacySymlink is later removed by container gc, so it does not make sense</span>
+<span class="token comment">// to create it in the first place. it happens when journald logging driver is used with docker.</span>
+<span class="token keyword">if</span> <span class="token boolean">_</span><span class="token punctuation">,</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span>osInterface<span class="token punctuation">.</span><span class="token function">Stat</span><span class="token punctuation">(</span>containerLog<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">!</span>os<span class="token punctuation">.</span><span class="token function">IsNotExist</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span>osInterface<span class="token punctuation">.</span><span class="token function">Symlink</span><span class="token punctuation">(</span>containerLog<span class="token punctuation">,</span> legacySymlink<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Failed to create legacy symbolic link %q to container %q log %q: %v&quot;</span><span class="token punctuation">,</span>
+            legacySymlink<span class="token punctuation">,</span> containerID<span class="token punctuation">,</span> containerLog<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="44-execute-post-start-hook">4.4. execute post start hook</h2>
+<p>&#x5982;&#x679C;&#x6709;&#x6307;&#x5B9A;<code>Lifecycle.PostStart</code>&#xFF0C;&#x5219;&#x6267;&#x884C;<code>PostStart</code>&#x64CD;&#x4F5C;&#xFF0C;<code>PostStart</code>&#x5982;&#x679C;&#x6267;&#x884C;&#x5931;&#x8D25;&#xFF0C;&#x5219;&#x5BB9;&#x5668;&#x4F1A;&#x6839;&#x636E;&#x91CD;&#x542F;&#x7684;&#x89C4;&#x5219;&#x8FDB;&#x884C;&#x91CD;&#x542F;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Step 4: execute the post start hook.</span>
+<span class="token keyword">if</span> container<span class="token punctuation">.</span>Lifecycle <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token operator">&amp;&amp;</span> container<span class="token punctuation">.</span>Lifecycle<span class="token punctuation">.</span>PostStart <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    kubeContainerID <span class="token operator">:=</span> kubecontainer<span class="token punctuation">.</span>ContainerID<span class="token punctuation">{</span>
+        Type<span class="token punctuation">:</span> m<span class="token punctuation">.</span>runtimeName<span class="token punctuation">,</span>
+        ID<span class="token punctuation">:</span>   containerID<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+    msg<span class="token punctuation">,</span> handlerErr <span class="token operator">:=</span> m<span class="token punctuation">.</span>runner<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span>kubeContainerID<span class="token punctuation">,</span> pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> container<span class="token punctuation">.</span>Lifecycle<span class="token punctuation">.</span>PostStart<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> handlerErr <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        m<span class="token punctuation">.</span><span class="token function">recordContainerEvent</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> container<span class="token punctuation">,</span> kubeContainerID<span class="token punctuation">.</span>ID<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>EventTypeWarning<span class="token punctuation">,</span> events<span class="token punctuation">.</span>FailedPostStartHook<span class="token punctuation">,</span> msg<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> err <span class="token operator">:=</span> m<span class="token punctuation">.</span><span class="token function">killContainer</span><span class="token punctuation">(</span>pod<span class="token punctuation">,</span> kubeContainerID<span class="token punctuation">,</span> container<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> <span class="token string">&quot;FailedPostStartHook&quot;</span><span class="token punctuation">,</span> <span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            glog<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;Failed to kill container %q(id=%q) in pod %q: %v, %v&quot;</span><span class="token punctuation">,</span>
+                container<span class="token punctuation">.</span>Name<span class="token punctuation">,</span> kubeContainerID<span class="token punctuation">.</span><span class="token function">String</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> format<span class="token punctuation">.</span><span class="token function">Pod</span><span class="token punctuation">(</span>pod<span class="token punctuation">)</span><span class="token punctuation">,</span> ErrPostStartHook<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> msg<span class="token punctuation">,</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;%s: %v&quot;</span><span class="token punctuation">,</span> ErrPostStartHook<span class="token punctuation">,</span> handlerErr<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="5-&#x603B;&#x7ED3;">5. &#x603B;&#x7ED3;</h1>
+<p>kubelet&#x7684;&#x5DE5;&#x4F5C;&#x662F;&#x7BA1;&#x7406;pod&#x5728;Node&#x4E0A;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;&#xFF08;&#x5305;&#x62EC;&#x589E;&#x5220;&#x6539;&#x67E5;&#xFF09;&#xFF0C;kubelet&#x901A;&#x8FC7;&#x5404;&#x79CD;&#x7C7B;&#x578B;&#x7684;manager&#x5F02;&#x6B65;&#x5DE5;&#x4F5C;&#x5404;&#x81EA;&#x6267;&#x884C;&#x5404;&#x81EA;&#x7684;&#x4EFB;&#x52A1;&#xFF0C;&#x5176;&#x4E2D;&#x4F7F;&#x7528;&#x5230;&#x4E86;&#x591A;&#x79CD;&#x7684;channel&#x6765;&#x63A7;&#x5236;&#x72B6;&#x6001;&#x4FE1;&#x53F7;&#x53D8;&#x5316;&#x7684;&#x4F20;&#x9012;&#xFF0C;&#x4F8B;&#x5982;&#x6BD4;&#x8F83;&#x91CD;&#x8981;&#x7684;channel&#x6709;<code>podUpdates &lt;-chan UpdatePodOptions</code>&#xFF0C;&#x6765;&#x4F20;&#x9012;pod&#x7684;&#x53D8;&#x5316;&#x60C5;&#x51B5;&#x3002;</p>
+<p><strong>&#x521B;&#x5EFA;pod&#x7684;&#x8C03;&#x7528;&#x903B;&#x8F91;</strong></p>
+<p><code>syncLoopIteration--&gt;kubetypes.ADD--&gt;HandlePodAdditions(u.Pods)--&gt;dispatchWork(pod, kubetypes.SyncPodCreate, mirrorPod, start)--&gt;podWorkers.UpdatePod--&gt;managePodLoop(podUpdates)--&gt;syncPod(o syncPodOptions)--&gt;containerRuntime.SyncPod--&gt;startContainer</code></p>
+<p>&#x53C2;&#x8003;&#xFF1A;</p>
+<ul>
+<li><a href="https://github.com/kubernetes/kubernetes/blob/v1.12.0/pkg/kubelet/kubelet.go" target="_blank">https://github.com/kubernetes/kubernetes/blob/v1.12.0/pkg/kubelet/kubelet.go</a></li>
+<li><a href="https://github.com/kubernetes/kubernetes/blob/v1.12.0/pkg/kubelet/pod_workers.go" target="_blank">https://github.com/kubernetes/kubernetes/blob/v1.12.0/pkg/kubelet/pod_workers.go</a></li>
+<li><a href="https://github.com/kubernetes/kubernetes/blob/v1.12.0/pkg/kubelet/kuberuntime/kuberuntime_container.go" target="_blank">https://github.com/kubernetes/kubernetes/blob/v1.12.0/pkg/kubelet/kuberuntime/kuberuntime_container.go</a> </li>
+</ul>
+<footer class="page-footer"><span class="copyright">Copyright &#xA9; www.huweihuang.com 2017-2018 all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">Updated at 
+2019-07-31 10:18:04
+</span></footer>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="syncLoopIteration.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: syncLoopIteration">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"syncPod","level":"5.5","depth":1,"previous":{"title":"syncLoopIteration","level":"5.4","depth":1,"path":"kubelet/syncLoopIteration.md","ref":"kubelet/syncLoopIteration.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","codesnippet","splitter","page-toc-button","image-captions","editlink","back-to-top-button","-lunr","-search","search-plus","github-buttons@2.1.0","favicon@^0.0.2","tbfed-pagefooter@^0.0.1","3-ba","theme-default","-highlight","prism","prism-themes","sitemap-general","ga","disqus","donate"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright © www.huweihuang.com 2017-2018","modify_label":"Updated at ","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-okaidia.css"]},"disqus":{"useIdentifier":false,"shortName":"huweihuang"},"github":{"url":"https://github.com/huweihuang"},"editlink":{"label":"编辑本页","multilingual":false,"base":"https://github.com/huweihuang/k8s-source-code-analysis/blob/master/"},"splitter":{},"donate":{"alipay":"http://ozilwgpje.bkt.clouddn.com/donate/alipay.jpg","alipayText":"支付宝打赏","button":"赏","title":"","wechat":"http://ozilwgpje.bkt.clouddn.com/donate/wechatpay.jpg","wechatText":"微信打赏"},"codesnippet":{},"sitemap-general":{"prefix":"https://www.huweihuang.com/k8s-source-code-analysis/"},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon":{"shortcut":"images/favicon.ico","bookmark":"images/favicon.ico","appleTouch":"images/favicon.ico","appleTouchMore":{"120x120":"images/favicon.ico","180x180":"images/favicon.ico"}},"page-toc-button":{},"back-to-top-button":{},"prism-themes":{},"github-buttons":{"repo":"huweihuang/k8s-source-code-analysis","types":["star"],"size":"small"},"3-ba":{"configuration":"auto","token":"e146d71b77957235bba1e709d930f62e"},"ga":{"configuration":"auto","token":"UA-114718458-2"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"showLevel":true,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{},"image-captions":{"caption":"图片 - _CAPTION_","variable_name":"_pictures"}},"theme":"default","author":"胡伟煌","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{"_pictures":[]},"title":"Kubernetes 学习笔记","language":"zh-hans","links":{"sidebar":{"胡伟煌的博客":"https://www.huweihuang.com","Kubernetes 学习笔记":"https://www.huweihuang.com/kubernetes-notes/","Golang 学习笔记":"https://www.huweihuang.com/golang-notes/","Linux 学习笔记":"https://www.huweihuang.com/linux-notes/","数据结构学习笔记":"https://www.huweihuang.com/data-structure-notes/","Python 学习笔记":"https://www.huweihuang.com/python-notes/","Blockchain 学习笔记":"https://www.huweihuang.com/blockchain-notes/"}},"gitbook":"*","description":"Kubernetes 学习笔记"},"file":{"path":"kubelet/syncPod.md","mtime":"2019-07-31T02:18:04.153Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-10-17T11:33:05.076Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-splitter/splitter.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-page-toc-button/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-editlink/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-plus/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-plus/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-github-buttons/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-3-ba/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.16.1/URI.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-disqus/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-donate/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
