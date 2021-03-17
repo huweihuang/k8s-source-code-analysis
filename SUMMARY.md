@@ -13,7 +13,13 @@
 
 * [NewControllerManagerCommand](kube-controller-manager/NewControllerManagerCommand.md)
 * [DeploymentController](kube-controller-manager/deployment-controller.md)
-* [Informer机制](kube-controller-manager/sharedIndexInformer.md)
+* [Informer机制]()
+    * [Informer原理](kube-controller-manager/list-watch/informer.md)
+    * [sharedIndexInformer](kube-controller-manager/list-watch/sharedIndexInformer.md)
+    * [Reflector](kube-controller-manager/list-watch/reflector.md)    
+    * [DeltaFIFO](kube-controller-manager/list-watch/DeltaFIFO.md)
+    * [processLoop](kube-controller-manager/list-watch/processLoop.md)
+    * [总结](kube-controller-manager/list-watch/summary.md)
 
 ## kube-scheduler
 
