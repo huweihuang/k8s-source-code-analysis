@@ -38,12 +38,12 @@
 ## kube-scheduler
 
 * [源码思维导图](kube-scheduler/scheduler-xmind.md)
- * [NewSchedulerCommand](kube-scheduler/NewSchedulerCommand.md)
- * [registerAlgorithmProvider](kube-scheduler/registerAlgorithmProvider.md)
- * [scheduleOne](kube-scheduler/scheduleOne.md)
- * [findNodesThatFit](kube-scheduler/findNodesThatFit.md)
- * [PrioritizeNodes](kube-scheduler/PrioritizeNodes.md)
- * [preempt](kube-scheduler/preempt.md)
+* [NewSchedulerCommand](kube-scheduler/NewSchedulerCommand.md)
+* [registerAlgorithmProvider](kube-scheduler/registerAlgorithmProvider.md)
+* [scheduleOne](kube-scheduler/scheduleOne.md)
+* [findNodesThatFit](kube-scheduler/findNodesThatFit.md)
+* [PrioritizeNodes](kube-scheduler/PrioritizeNodes.md)
+* [preempt](kube-scheduler/preempt.md)
 
 ## kubelet
 
