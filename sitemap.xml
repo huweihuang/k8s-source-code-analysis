@@ -5,12 +5,10 @@
 <url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/controller-manager-xmind.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/NewControllerManagerCommand.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/deployment-controller.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
-<url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/list-watch/informer.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
-<url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/list-watch/sharedIndexInformer.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
-<url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/list-watch/reflector.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
-<url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/list-watch/DeltaFIFO.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
-<url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/list-watch/processLoop.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
-<url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/list-watch/summary.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/informer.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/replicaset-controller.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/daemonset-controller.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-controller-manager/controller-runtime.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-scheduler/scheduler-xmind.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-scheduler/NewSchedulerCommand.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://www.huweihuang.com/k8s-source-code-analysis/kube-scheduler/registerAlgorithmProvider.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>

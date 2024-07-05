@@ -1,0 +1,1114 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-hans" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>ControllerRuntime · Kubernetes 学习笔记</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="胡伟煌">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-splitter/splitter.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-page-toc-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-image-captions/image-captions.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-tbfed-pagefooter/footer.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-okaidia.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-disqus/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-donate/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../kube-scheduler/scheduler-xmind.html" />
+    
+    
+    <link rel="prev" href="daemonset-controller.html" />
+    
+
+    
+        <link rel="shortcut icon" href='../images/favicon.ico' type="image/x-icon">
+    
+    
+        <link rel="bookmark" href='../images/favicon.ico' type="image/x-icon">
+    
+    
+        <link rel="apple-touch-icon" href='../images/favicon.ico'>
+    
+    
+        
+        <link rel="apple-touch-icon" sizes="120x120" href="../images/favicon.ico">
+        
+        <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon.ico">
+        
+    
+
+    <style>
+    @media only screen and (max-width: 640px) {
+        .book-header .hidden-mobile {
+            display: none;
+        }
+    }
+    </style>
+    <script>
+        window["gitbook-plugin-github-buttons"] = {"repo":"huweihuang/k8s-source-code-analysis","types":["star"],"size":"small"};
+    </script>
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="输入并搜索" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com" target="_blank" class="custom-link">胡伟煌的博客</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/kubernetes-notes/" target="_blank" class="custom-link">Kubernetes 学习笔记</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/golang-notes/" target="_blank" class="custom-link">Golang 学习笔记</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/linux-notes/" target="_blank" class="custom-link">Linux 学习笔记</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/data-structure-notes/" target="_blank" class="custom-link">数据结构学习笔记</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/python-notes/" target="_blank" class="custom-link">Python 学习笔记</a>
+        </li>
+    
+        
+        <li>
+            <a href="https://www.huweihuang.com/blockchain-notes/" target="_blank" class="custom-link">Blockchain 学习笔记</a>
+        </li>
+    
+    
+
+    
+    <li class="divider"></li>
+    
+
+    
+        
+        <li class="header">前言</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                        <b>1.1.</b>
+                    
+                    序言
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">kube-apiserver</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../kube-apiserver/NewAPIServerCommand.html">
+            
+                <a href="../kube-apiserver/NewAPIServerCommand.html">
+            
+                    
+                        <b>2.1.</b>
+                    
+                    NewAPIServerCommand
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">kube-controller-manager</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="controller-manager-xmind.html">
+            
+                <a href="controller-manager-xmind.html">
+            
+                    
+                        <b>3.1.</b>
+                    
+                    源码思维导图
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="NewControllerManagerCommand.html">
+            
+                <a href="NewControllerManagerCommand.html">
+            
+                    
+                        <b>3.2.</b>
+                    
+                    NewControllerManagerCommand
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="deployment-controller.html">
+            
+                <a href="deployment-controller.html">
+            
+                    
+                        <b>3.3.</b>
+                    
+                    DeploymentController
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="informer.html">
+            
+                <a href="informer.html">
+            
+                    
+                        <b>3.4.</b>
+                    
+                    Informer机制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="replicaset-controller.html">
+            
+                <a href="replicaset-controller.html">
+            
+                    
+                        <b>3.5.</b>
+                    
+                    ReplicasetController
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.6" data-path="daemonset-controller.html">
+            
+                <a href="daemonset-controller.html">
+            
+                    
+                        <b>3.6.</b>
+                    
+                    DaemonsetController
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="3.7" data-path="controller-runtime.html">
+            
+                <a href="controller-runtime.html">
+            
+                    
+                        <b>3.7.</b>
+                    
+                    ControllerRuntime
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">kube-scheduler</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../kube-scheduler/scheduler-xmind.html">
+            
+                <a href="../kube-scheduler/scheduler-xmind.html">
+            
+                    
+                        <b>4.1.</b>
+                    
+                    源码思维导图
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="../kube-scheduler/NewSchedulerCommand.html">
+            
+                <a href="../kube-scheduler/NewSchedulerCommand.html">
+            
+                    
+                        <b>4.2.</b>
+                    
+                    NewSchedulerCommand
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="../kube-scheduler/registerAlgorithmProvider.html">
+            
+                <a href="../kube-scheduler/registerAlgorithmProvider.html">
+            
+                    
+                        <b>4.3.</b>
+                    
+                    registerAlgorithmProvider
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="../kube-scheduler/scheduleOne.html">
+            
+                <a href="../kube-scheduler/scheduleOne.html">
+            
+                    
+                        <b>4.4.</b>
+                    
+                    scheduleOne
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="../kube-scheduler/findNodesThatFit.html">
+            
+                <a href="../kube-scheduler/findNodesThatFit.html">
+            
+                    
+                        <b>4.5.</b>
+                    
+                    findNodesThatFit
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" data-path="../kube-scheduler/PrioritizeNodes.html">
+            
+                <a href="../kube-scheduler/PrioritizeNodes.html">
+            
+                    
+                        <b>4.6.</b>
+                    
+                    PrioritizeNodes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7" data-path="../kube-scheduler/preempt.html">
+            
+                <a href="../kube-scheduler/preempt.html">
+            
+                    
+                        <b>4.7.</b>
+                    
+                    preempt
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">kubelet</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../kubelet/kubelet-xmind.html">
+            
+                <a href="../kubelet/kubelet-xmind.html">
+            
+                    
+                        <b>5.1.</b>
+                    
+                    源码思维导图
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../kubelet/NewKubeletCommand.html">
+            
+                <a href="../kubelet/NewKubeletCommand.html">
+            
+                    
+                        <b>5.2.</b>
+                    
+                    NewKubeletCommand
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../kubelet/NewMainKubelet.html">
+            
+                <a href="../kubelet/NewMainKubelet.html">
+            
+                    
+                        <b>5.3.</b>
+                    
+                    NewMainKubelet
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="../kubelet/startKubelet.html">
+            
+                <a href="../kubelet/startKubelet.html">
+            
+                    
+                        <b>5.4.</b>
+                    
+                    startKubelet
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.5" data-path="../kubelet/syncLoopIteration.html">
+            
+                <a href="../kubelet/syncLoopIteration.html">
+            
+                    
+                        <b>5.5.</b>
+                    
+                    syncLoopIteration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.6" data-path="../kubelet/syncPod.html">
+            
+                <a href="../kubelet/syncPod.html">
+            
+                    
+                        <b>5.6.</b>
+                    
+                    syncPod
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本书使用 GitBook 发布
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >ControllerRuntime</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div class="search-plus" id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <blockquote>
+<p>&#x672C;&#x6587;&#x4E3B;&#x8981;&#x5206;&#x6790;controller-runtime&#x7684;&#x6E90;&#x7801;&#xFF0C;&#x6E90;&#x7801;&#x7248;&#x672C;&#x4E3A;v0.16.3</p>
+</blockquote>
+<h1 id="1-&#x6982;&#x8FF0;">1. &#x6982;&#x8FF0;</h1>
+<p>controller-runtime&#x6E90;&#x7801;&#x5730;&#x5740;&#xFF1A;<a href="https://github.com/kubernetes-sigs/controller-runtime&#x3002;" target="_blank">https://github.com/kubernetes-sigs/controller-runtime&#x3002;</a></p>
+<p>controller-runtime&#x9879;&#x76EE;&#x662F;&#x4E00;&#x4E2A;&#x7528;&#x4E8E;&#x5FEB;&#x901F;&#x6784;&#x5EFA;k8s operator&#x7684;&#x5DE5;&#x5177;&#x5305;&#x3002;&#x5176;&#x4E2D;kubebuilder&#x548C;operator-sdk&#x9879;&#x76EE;&#x90FD;&#x662F;&#x901A;&#x8FC7;controller-runtime&#x9879;&#x76EE;&#x6765;&#x5FEB;&#x901F;&#x7F16;&#x5199;k8s operator&#x7684;&#x5DE5;&#x5177;&#x3002;</p>
+<p>&#x672C;&#x6587;&#x4EE5;kubebuilder&#x7684;&#x4EE3;&#x7801;&#x751F;&#x6210;&#x67B6;&#x6784;&#x4E3A;&#x4F8B;&#xFF0C;&#x5206;&#x6790;controller-runtime&#x7684;&#x903B;&#x8F91;&#x3002;kubebuilder&#x6846;&#x67B6;&#x751F;&#x6210;&#x7684;&#x4EE3;&#x7801;&#x53C2;&#x8003;&#xFF1A;<a href="https://github.com/huweihuang/venus" target="_blank">https://github.com/huweihuang/venus</a></p>
+<h1 id="2-controller-runtime&#x67B6;&#x6784;&#x56FE;">2. controller-runtime&#x67B6;&#x6784;&#x56FE;</h1>
+<p><img src="https://res.cloudinary.com/dqxtn0ick/image/upload/v1700367468/article/kubernetes/kubebuilder/controller_runtime_overview.jpg" alt=""></p>
+<p>&#x4EE3;&#x7801;&#x76EE;&#x5F55;&#xFF1A;</p>
+<pre class="language-"><code class="lang-bash">pkg
+&#x251C;&#x2500;&#x2500; builder
+&#x251C;&#x2500;&#x2500; cache
+&#x251C;&#x2500;&#x2500; client  <span class="token comment"># client&#x7528;&#x4E8E;&#x64CD;&#x4F5C;k8s&#x7684;&#x5BF9;&#x8C61;</span>
+&#x251C;&#x2500;&#x2500; cluster
+&#x251C;&#x2500;&#x2500; config
+&#x251C;&#x2500;&#x2500; controller  <span class="token comment"># controller&#x903B;&#x8F91;</span>
+&#x251C;&#x2500;&#x2500; envtest
+&#x251C;&#x2500;&#x2500; event
+&#x251C;&#x2500;&#x2500; finalizer
+&#x251C;&#x2500;&#x2500; handler
+&#x251C;&#x2500;&#x2500; internal  <span class="token comment"># &#x6838;&#x5FC3;&#x4EE3;&#x7801; controller&#x7684;&#x5177;&#x4F53;&#x5B9E;&#x73B0;</span>
+&#x251C;&#x2500;&#x2500; leaderelection
+&#x251C;&#x2500;&#x2500; manager   <span class="token comment"># &#x6838;&#x5FC3;&#x4EE3;&#x7801;</span>
+&#x251C;&#x2500;&#x2500; predicate
+&#x251C;&#x2500;&#x2500; ratelimiter
+&#x251C;&#x2500;&#x2500; reconcile
+&#x251C;&#x2500;&#x2500; recorder
+&#x251C;&#x2500;&#x2500; scheme
+&#x251C;&#x2500;&#x2500; <span class="token function">source</span>
+&#x2514;&#x2500;&#x2500; webhook
+</code></pre>
+<h1 id="3-operator&#x6846;&#x67B6;&#x903B;&#x8F91;">3. Operator&#x6846;&#x67B6;&#x903B;&#x8F91;</h1>
+<blockquote>
+<p>&#x4EE3;&#x7801;&#x53C2;&#x8003;&#xFF1A;<a href="https://github.com/huweihuang/venus/blob/main/cmd/app/operator.go#L71" target="_blank">https://github.com/huweihuang/venus/blob/main/cmd/app/operator.go#L71</a></p>
+</blockquote>
+<p>operator&#x4EE3;&#x7801;&#x6846;&#x67B6;&#x7684;&#x4E3B;&#x4F53;&#x903B;&#x8F91;&#x5305;&#x62EC;&#x4EE5;&#x4E0B;&#x51E0;&#x4E2A;&#x90E8;&#x5206;&#x3002;</p>
+<ul>
+<li><p><code>manager</code>&#xFF1A;&#x4E3B;&#x8981;&#x7528;&#x6765;&#x7BA1;&#x7406;&#x591A;&#x4E2A;&#x7684;controller&#xFF0C;&#x6784;&#x5EFA;&#xFF0C;&#x6CE8;&#x518C;&#xFF0C;&#x8FD0;&#x884C;controller&#x3002;</p>
+</li>
+<li><p><code>controller</code>&#xFF1A;&#x4E3B;&#x8981;&#x7528;&#x6765;&#x5C01;&#x88C5;reconciler&#x7684;&#x63A7;&#x5236;&#x5668;&#x3002;</p>
+</li>
+<li><p><code>reconciler</code>&#xFF1A;&#x5177;&#x4F53;&#x6267;&#x884C;&#x4E1A;&#x52A1;&#x903B;&#x8F91;&#x7684;&#x51FD;&#x6570;&#x3002;</p>
+</li>
+</ul>
+<p>manger&#x7684;&#x6846;&#x67B6;&#x4E3B;&#x8981;&#x5305;&#x542B;&#x4EE5;&#x4E0B;&#x51E0;&#x4E2A;&#x90E8;&#x5206;&#x3002;</p>
+<ul>
+<li><p>mgr:=ctrl.NewManager&#xFF1A;&#x6784;&#x5EFA;&#x4E00;&#x4E2A;manager&#x5BF9;&#x8C61;&#x3002;</p>
+</li>
+<li><p>Reconciler.SetupWithManager(mgr)&#xFF1A;&#x6CE8;&#x518C;controller&#x5230;manager&#x5BF9;&#x8C61;&#x3002;</p>
+</li>
+<li><p>mgr.Start(ctrl.SetupSignalHandler())&#xFF1A;&#x8FD0;&#x884C;manager&#x4ECE;&#x800C;&#x8FD0;&#x884C;controller&#x7684;&#x903B;&#x8F91;&#x3002;</p>
+</li>
+</ul>
+<p>&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre class="language-"><code class="lang-go">  <span class="token comment">// &#x6784;&#x5EFA;manager&#x5BF9;&#x8C61;&#xFF0C;&#x4E3B;&#x8981;&#x7684;&#x521D;&#x59CB;&#x5316;&#x53C2;&#x6570;&#x5305;&#x62EC;</span>
+    <span class="token comment">// - kubeconfig</span>
+    <span class="token comment">// - controller&#x7684;option&#x53C2;&#x6570;</span>
+    mgr<span class="token punctuation">,</span> err <span class="token operator">:=</span> ctrl<span class="token punctuation">.</span><span class="token function">NewManager</span><span class="token punctuation">(</span>ctrl<span class="token punctuation">.</span><span class="token function">GetConfigOrDie</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> ctrl<span class="token punctuation">.</span>Options<span class="token punctuation">{</span>
+        Scheme<span class="token punctuation">:</span>                 scheme<span class="token punctuation">,</span>
+        Metrics<span class="token punctuation">:</span>                metricsserver<span class="token punctuation">.</span>Options<span class="token punctuation">{</span>BindAddress<span class="token punctuation">:</span> opt<span class="token punctuation">.</span>MetricsAddr<span class="token punctuation">}</span><span class="token punctuation">,</span>
+        HealthProbeBindAddress<span class="token punctuation">:</span> opt<span class="token punctuation">.</span>ProbeAddr<span class="token punctuation">,</span>
+        LeaderElection<span class="token punctuation">:</span>         opt<span class="token punctuation">.</span>EnableLeaderElection<span class="token punctuation">,</span>
+        LeaderElectionID<span class="token punctuation">:</span>       <span class="token string">&quot;52609143.huweihuang.com&quot;</span><span class="token punctuation">,</span>
+        Controller<span class="token punctuation">:</span> config<span class="token punctuation">.</span>Controller<span class="token punctuation">{</span>
+            MaxConcurrentReconciles<span class="token punctuation">:</span> opt<span class="token punctuation">.</span>MaxConcurrentReconciles<span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token comment">// &#x5C06;controller&#x6CE8;&#x518C;&#x5230;manager&#x4E2D;&#xFF0C;&#x5E76;&#x521D;&#x59CB;&#x5316;controller&#x5BF9;&#x8C61;&#x3002;</span>
+    <span class="token keyword">if</span> err <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">&amp;</span>venuscontroller<span class="token punctuation">.</span>RedisReconciler<span class="token punctuation">{</span>
+        Client<span class="token punctuation">:</span> mgr<span class="token punctuation">.</span><span class="token function">GetClient</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        Scheme<span class="token punctuation">:</span> mgr<span class="token punctuation">.</span><span class="token function">GetScheme</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">SetupWithManager</span><span class="token punctuation">(</span>mgr<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        setupLog<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> <span class="token string">&quot;unable to create controller&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;controller&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Redis&quot;</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> err
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// &#x8FD0;&#x884C;manager&#x5BF9;&#x8C61;&#xFF0C;&#x4ECE;&#x800C;&#x8FD0;&#x884C;controller&#x4E2D;&#x7684;reconcile&#x903B;&#x8F91;&#x3002;</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> mgr<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span>ctrl<span class="token punctuation">.</span><span class="token function">SetupSignalHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        setupLog<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> <span class="token string">&quot;problem running manager&quot;</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> err
+    <span class="token punctuation">}</span>
+</code></pre>
+<h1 id="4-newmanager">4. NewManager</h1>
+<p>NewManager&#x521D;&#x59CB;&#x5316;&#x4E00;&#x4E2A;manager &#x7528;&#x6765;&#x7BA1;&#x7406;&#x548C;&#x521B;&#x5EFA;controller&#x5BF9;&#x8C61;&#x3002;&#x4E00;&#x4E2A;manager&#x53EF;&#x4EE5;&#x5173;&#x8054;&#x591A;&#x4E2A;controller&#x5BF9;&#x8C61;&#x3002;manager&#x662F;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#xFF0C;&#x800C;&#x6700;&#x7EC8;&#x662F;&#x5B9E;&#x73B0;&#x7ED3;&#x6784;&#x4F53;&#x662F;<code>controllerManager</code>&#x7684;&#x5BF9;&#x8C61;&#x3002;</p>
+<h2 id="41-manager&#x63A5;&#x53E3;">4.1. Manager&#x63A5;&#x53E3;</h2>
+<pre class="language-"><code class="lang-go"><span class="token keyword">type</span> Manager <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Cluster holds a variety of methods to interact with a cluster.</span>
+    cluster<span class="token punctuation">.</span>Cluster
+
+    <span class="token comment">// Add will set requested dependencies on the component, and cause the component to be</span>
+    <span class="token comment">// started when Start is called.</span>
+    <span class="token comment">// Depending on if a Runnable implements LeaderElectionRunnable interface, a Runnable can be run in either</span>
+    <span class="token comment">// non-leaderelection mode (always running) or leader election mode (managed by leader election if enabled).</span>
+
+  <span class="token comment">// &#x901A;&#x8FC7;Runnable&#x63A5;&#x53E3;&#x5C06;&#x5177;&#x4F53;&#x7684;controller&#x6CE8;&#x518C;&#x5230;manager&#x4E2D;&#x3002;</span>
+    <span class="token function">Add</span><span class="token punctuation">(</span>Runnable<span class="token punctuation">)</span> <span class="token builtin">error</span>
+
+    <span class="token comment">// Start starts all registered Controllers and blocks until the context is cancelled.</span>
+    <span class="token comment">// Returns an error if there is an error starting any controller.</span>
+    <span class="token comment">//</span>
+    <span class="token comment">// If LeaderElection is used, the binary must be exited immediately after this returns,</span>
+    <span class="token comment">// otherwise components that need leader election might continue to run after the leader</span>
+    <span class="token comment">// lock was lost.</span>
+
+  <span class="token comment">// &#x8FD0;&#x884C;&#x5177;&#x4F53;&#x7684;&#x903B;&#x8F91;</span>
+    <span class="token function">Start</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token builtin">error</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="42-newcontrollermanager">4.2. NewControllerManager</h2>
+<p>New&#x6784;&#x5EFA;&#x4E00;&#x4E2A;&#x5177;&#x4F53;&#x7684;controllerManager&#x7684;&#x5BF9;&#x8C61;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token function">New</span><span class="token punctuation">(</span>config <span class="token operator">*</span>rest<span class="token punctuation">.</span>Config<span class="token punctuation">,</span> options Options<span class="token punctuation">)</span> <span class="token punctuation">(</span>Manager<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Set default values for options fields</span>
+    options <span class="token operator">=</span> <span class="token function">setOptionsDefaults</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span>
+    <span class="token operator">...</span> 
+
+    errChan <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    runnables <span class="token operator">:=</span> <span class="token function">newRunnables</span><span class="token punctuation">(</span>options<span class="token punctuation">.</span>BaseContext<span class="token punctuation">,</span> errChan<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token operator">&amp;</span>controllerManager<span class="token punctuation">{</span>
+        stopProcedureEngaged<span class="token punctuation">:</span>          pointer<span class="token punctuation">.</span><span class="token function">Int64</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        cluster<span class="token punctuation">:</span>                       cluster<span class="token punctuation">,</span>
+        runnables<span class="token punctuation">:</span>                     runnables<span class="token punctuation">,</span>
+        errChan<span class="token punctuation">:</span>                       errChan<span class="token punctuation">,</span>
+        recorderProvider<span class="token punctuation">:</span>              recorderProvider<span class="token punctuation">,</span>
+        resourceLock<span class="token punctuation">:</span>                  resourceLock<span class="token punctuation">,</span>
+        metricsServer<span class="token punctuation">:</span>                 metricsServer<span class="token punctuation">,</span>
+        controllerConfig<span class="token punctuation">:</span>              options<span class="token punctuation">.</span>Controller<span class="token punctuation">,</span>
+        logger<span class="token punctuation">:</span>                        options<span class="token punctuation">.</span>Logger<span class="token punctuation">,</span>
+        elected<span class="token punctuation">:</span>                       <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        webhookServer<span class="token punctuation">:</span>                 options<span class="token punctuation">.</span>WebhookServer<span class="token punctuation">,</span>
+        leaderElectionID<span class="token punctuation">:</span>              options<span class="token punctuation">.</span>LeaderElectionID<span class="token punctuation">,</span>
+        leaseDuration<span class="token punctuation">:</span>                 <span class="token operator">*</span>options<span class="token punctuation">.</span>LeaseDuration<span class="token punctuation">,</span>
+        renewDeadline<span class="token punctuation">:</span>                 <span class="token operator">*</span>options<span class="token punctuation">.</span>RenewDeadline<span class="token punctuation">,</span>
+        retryPeriod<span class="token punctuation">:</span>                   <span class="token operator">*</span>options<span class="token punctuation">.</span>RetryPeriod<span class="token punctuation">,</span>
+        healthProbeListener<span class="token punctuation">:</span>           healthProbeListener<span class="token punctuation">,</span>
+        readinessEndpointName<span class="token punctuation">:</span>         options<span class="token punctuation">.</span>ReadinessEndpointName<span class="token punctuation">,</span>
+        livenessEndpointName<span class="token punctuation">:</span>          options<span class="token punctuation">.</span>LivenessEndpointName<span class="token punctuation">,</span>
+        pprofListener<span class="token punctuation">:</span>                 pprofListener<span class="token punctuation">,</span>
+        gracefulShutdownTimeout<span class="token punctuation">:</span>       <span class="token operator">*</span>options<span class="token punctuation">.</span>GracefulShutdownTimeout<span class="token punctuation">,</span>
+        internalProceduresStop<span class="token punctuation">:</span>        <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        leaderElectionStopped<span class="token punctuation">:</span>         <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        leaderElectionReleaseOnCancel<span class="token punctuation">:</span> options<span class="token punctuation">.</span>LeaderElectionReleaseOnCancel<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="5-setupwithmanager">5. SetupWithManager</h1>
+<p>SetupWithManager&#x5C06;&#x5177;&#x4F53;&#x7684;controller&#x6CE8;&#x518C;&#x5230;manager&#x4E2D;&#x3002;&#x5176;&#x4E2D;&#x901A;&#x8FC7;<code>Complete</code>&#x5B8C;&#x6210;controller&#x7684;&#x521D;&#x59CB;&#x5316;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// SetupWithManager sets up the controller with the Manager.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>r <span class="token operator">*</span>RedisReconciler<span class="token punctuation">)</span> <span class="token function">SetupWithManager</span><span class="token punctuation">(</span>mgr ctrl<span class="token punctuation">.</span>Manager<span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> ctrl<span class="token punctuation">.</span><span class="token function">NewControllerManagedBy</span><span class="token punctuation">(</span>mgr<span class="token punctuation">)</span><span class="token punctuation">.</span>
+        <span class="token function">For</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>venusv1<span class="token punctuation">.</span>Redis<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
+        <span class="token function">Complete</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>SetupWithManager&#x901A;&#x8FC7;NewControllerManagedBy&#x65B9;&#x6CD5;&#x6784;&#x5EFA;&#x4E86;&#x4E00;&#x4E2A;Builder&#x7684;&#x5BF9;&#x8C61;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Builder builds a Controller.</span>
+<span class="token keyword">type</span> Builder <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    forInput         ForInput
+    ownsInput        <span class="token punctuation">[</span><span class="token punctuation">]</span>OwnsInput
+    watchesInput     <span class="token punctuation">[</span><span class="token punctuation">]</span>WatchesInput
+    mgr              manager<span class="token punctuation">.</span>Manager
+    globalPredicates <span class="token punctuation">[</span><span class="token punctuation">]</span>predicate<span class="token punctuation">.</span>Predicate
+    ctrl             controller<span class="token punctuation">.</span>Controller
+    ctrlOptions      controller<span class="token punctuation">.</span>Options
+    name             <span class="token builtin">string</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// ControllerManagedBy returns a new controller builder that will be started by the provided Manager.</span>
+<span class="token keyword">func</span> <span class="token function">ControllerManagedBy</span><span class="token punctuation">(</span>m manager<span class="token punctuation">.</span>Manager<span class="token punctuation">)</span> <span class="token operator">*</span>Builder <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token operator">&amp;</span>Builder<span class="token punctuation">{</span>mgr<span class="token punctuation">:</span> m<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>&#x901A;&#x8FC7;builder&#x5BF9;&#x8C61;&#x5B8C;&#x6210;controller&#x7684;&#x521D;&#x59CB;&#x5316;&#x3002;</p>
+<h2 id="51-controller&#x521D;&#x59CB;&#x5316;">5.1. controller&#x521D;&#x59CB;&#x5316;</h2>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Build builds the Application Controller and returns the Controller it created.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>blder <span class="token operator">*</span>Builder<span class="token punctuation">)</span> <span class="token function">Build</span><span class="token punctuation">(</span>r reconcile<span class="token punctuation">.</span>Reconciler<span class="token punctuation">)</span> <span class="token punctuation">(</span>controller<span class="token punctuation">.</span>Controller<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// Set the ControllerManagedBy</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> blder<span class="token punctuation">.</span><span class="token function">doController</span><span class="token punctuation">(</span>r<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>  <span class="token comment">// &#x521D;&#x59CB;&#x5316;controller</span>
+        <span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> err
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Set the Watch</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> blder<span class="token punctuation">.</span><span class="token function">doWatch</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>   <span class="token comment">// &#x6DFB;&#x52A0;event handler</span>
+        <span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> err
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> blder<span class="token punctuation">.</span>ctrl<span class="token punctuation">,</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><code>doController</code>&#x6700;&#x7EC8;&#x901A;&#x8FC7;&#x8C03;&#x7528;<code>NewUnmanaged</code>&#x6784;&#x5EFA;&#x4E00;&#x4E2A;controller&#x5BF9;&#x8C61;&#x3002;&#x5E76;&#x4F20;&#x5165;&#x81EA;&#x5B9A;&#x4E49;&#x7684;reconciler&#x5BF9;&#x8C61;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token function">New</span><span class="token punctuation">(</span>name <span class="token builtin">string</span><span class="token punctuation">,</span> mgr manager<span class="token punctuation">.</span>Manager<span class="token punctuation">,</span> options Options<span class="token punctuation">)</span> <span class="token punctuation">(</span>Controller<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    c<span class="token punctuation">,</span> err <span class="token operator">:=</span> <span class="token function">NewUnmanaged</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> mgr<span class="token punctuation">,</span> options<span class="token punctuation">)</span>
+    <span class="token operator">...</span>
+    <span class="token comment">// Add the controller as a Manager components</span>
+    <span class="token keyword">return</span> c<span class="token punctuation">,</span> mgr<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// NewUnmanaged returns a new controller without adding it to the manager. The</span>
+<span class="token comment">// caller is responsible for starting the returned controller.</span>
+<span class="token keyword">func</span> <span class="token function">NewUnmanaged</span><span class="token punctuation">(</span>name <span class="token builtin">string</span><span class="token punctuation">,</span> mgr manager<span class="token punctuation">.</span>Manager<span class="token punctuation">,</span> options Options<span class="token punctuation">)</span> <span class="token punctuation">(</span>Controller<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> options<span class="token punctuation">.</span>Reconciler <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;must specify Reconciler&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token operator">...</span>
+    <span class="token comment">// Create controller with dependencies set</span>
+    <span class="token keyword">return</span> <span class="token operator">&amp;</span>controller<span class="token punctuation">.</span>Controller<span class="token punctuation">{</span>
+        Do<span class="token punctuation">:</span> options<span class="token punctuation">.</span>Reconciler<span class="token punctuation">,</span>   <span class="token comment">// &#x5C06;&#x5177;&#x4F53;&#x7684;reconciler&#x51FD;&#x6570;&#x4F20;&#x9012;&#x5230;controller&#x7684;reconciler&#x3002;</span>
+        MakeQueue<span class="token punctuation">:</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> workqueue<span class="token punctuation">.</span>RateLimitingInterface <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> workqueue<span class="token punctuation">.</span><span class="token function">NewRateLimitingQueueWithConfig</span><span class="token punctuation">(</span>options<span class="token punctuation">.</span>RateLimiter<span class="token punctuation">,</span> workqueue<span class="token punctuation">.</span>RateLimitingQueueConfig<span class="token punctuation">{</span>
+                Name<span class="token punctuation">:</span> name<span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token comment">// &#x521D;&#x59CB;&#x5316;&#x4EFB;&#x52A1;&#x961F;&#x5217;</span>
+        MaxConcurrentReconciles<span class="token punctuation">:</span> options<span class="token punctuation">.</span>MaxConcurrentReconciles<span class="token punctuation">,</span> <span class="token comment">// &#x8BBE;&#x7F6E;controller&#x7684;&#x5E76;&#x53D1;&#x6570;</span>
+        CacheSyncTimeout<span class="token punctuation">:</span>        options<span class="token punctuation">.</span>CacheSyncTimeout<span class="token punctuation">,</span>
+        Name<span class="token punctuation">:</span>                    name<span class="token punctuation">,</span>
+        LogConstructor<span class="token punctuation">:</span>          options<span class="token punctuation">.</span>LogConstructor<span class="token punctuation">,</span>
+        RecoverPanic<span class="token punctuation">:</span>            options<span class="token punctuation">.</span>RecoverPanic<span class="token punctuation">,</span>
+        LeaderElected<span class="token punctuation">:</span>           options<span class="token punctuation">.</span>NeedLeaderElection<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token boolean">nil</span>
+</code></pre>
+<h2 id="52-&#x6DFB;&#x52A0;event-handler">5.2. &#x6DFB;&#x52A0;event handler</h2>
+<p><code>doWatch</code>&#x6700;&#x7EC8;&#x4F1A;&#x8FD0;&#x884C;informer.start&#x6DFB;&#x52A0;event handler&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token comment">// Watch implements controller.Controller.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Controller<span class="token punctuation">)</span> <span class="token function">Watch</span><span class="token punctuation">(</span>src source<span class="token punctuation">.</span>Source<span class="token punctuation">,</span> evthdler handler<span class="token punctuation">.</span>EventHandler<span class="token punctuation">,</span> prct <span class="token operator">...</span>predicate<span class="token punctuation">.</span>Predicate<span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+    c<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">defer</span> c<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment">// Controller hasn&apos;t started yet, store the watches locally and return.</span>
+    <span class="token comment">//</span>
+    <span class="token comment">// These watches are going to be held on the controller struct until the manager or user calls Start(...).</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span>c<span class="token punctuation">.</span>Started <span class="token punctuation">{</span>
+        c<span class="token punctuation">.</span>startWatches <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>startWatches<span class="token punctuation">,</span> watchDescription<span class="token punctuation">{</span>src<span class="token punctuation">:</span> src<span class="token punctuation">,</span> handler<span class="token punctuation">:</span> evthdler<span class="token punctuation">,</span> predicates<span class="token punctuation">:</span> prct<span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token boolean">nil</span>
+    <span class="token punctuation">}</span>
+
+    c<span class="token punctuation">.</span><span class="token function">LogConstructor</span><span class="token punctuation">(</span><span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Info</span><span class="token punctuation">(</span><span class="token string">&quot;Starting EventSource&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;source&quot;</span><span class="token punctuation">,</span> src<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> src<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>ctx<span class="token punctuation">,</span> evthdler<span class="token punctuation">,</span> c<span class="token punctuation">.</span>Queue<span class="token punctuation">,</span> prct<span class="token operator">...</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>add event handler</p>
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>is <span class="token operator">*</span>Informer<span class="token punctuation">)</span> <span class="token function">Start</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> handler handler<span class="token punctuation">.</span>EventHandler<span class="token punctuation">,</span> queue workqueue<span class="token punctuation">.</span>RateLimitingInterface<span class="token punctuation">,</span>
+    prct <span class="token operator">...</span>predicate<span class="token punctuation">.</span>Predicate<span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Informer should have been specified by the user.</span>
+    <span class="token keyword">if</span> is<span class="token punctuation">.</span>Informer <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;must specify Informer.Informer&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token boolean">_</span><span class="token punctuation">,</span> err <span class="token operator">:=</span> is<span class="token punctuation">.</span>Informer<span class="token punctuation">.</span><span class="token function">AddEventHandler</span><span class="token punctuation">(</span>internal<span class="token punctuation">.</span><span class="token function">NewEventHandler</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> queue<span class="token punctuation">,</span> handler<span class="token punctuation">,</span> prct<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">HandlerFuncs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> err
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="6-mgrstart">6. mgr.Start</h1>
+<p>controllerManager&#x8FD0;&#x884C;&#x4E4B;&#x524D;&#x6CE8;&#x518C;&#x7684;runnables&#x7684;&#x51FD;&#x6570;&#xFF0C;&#x5176;&#x4E2D;&#x5305;&#x62EC;controller&#x7684;&#x51FD;&#x6570;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>cm <span class="token operator">*</span>controllerManager<span class="token punctuation">)</span> <span class="token function">Start</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token punctuation">(</span>err <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Start and wait for caches.</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> cm<span class="token punctuation">.</span>runnables<span class="token punctuation">.</span>Caches<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span>cm<span class="token punctuation">.</span>internalCtx<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Start the non-leaderelection Runnables after the cache has synced.</span>
+    <span class="token keyword">if</span> err <span class="token operator">:=</span> cm<span class="token punctuation">.</span>runnables<span class="token punctuation">.</span>Others<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span>cm<span class="token punctuation">.</span>internalCtx<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// Start the leader election and all required runnables.</span>
+    <span class="token punctuation">{</span>
+        ctx<span class="token punctuation">,</span> cancel <span class="token operator">:=</span> context<span class="token punctuation">.</span><span class="token function">WithCancel</span><span class="token punctuation">(</span>context<span class="token punctuation">.</span><span class="token function">Background</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        cm<span class="token punctuation">.</span>leaderElectionCancel <span class="token operator">=</span> cancel
+        <span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> cm<span class="token punctuation">.</span>resourceLock <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> err <span class="token operator">:=</span> cm<span class="token punctuation">.</span><span class="token function">startLeaderElection</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                    cm<span class="token punctuation">.</span>errChan <span class="token operator">&lt;-</span> err
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                <span class="token comment">// Treat not having leader election enabled the same as being elected.</span>
+                <span class="token keyword">if</span> err <span class="token operator">:=</span> cm<span class="token punctuation">.</span><span class="token function">startLeaderElectionRunnables</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                    cm<span class="token punctuation">.</span>errChan <span class="token operator">&lt;-</span> err
+                <span class="token punctuation">}</span>
+                <span class="token function">close</span><span class="token punctuation">(</span>cm<span class="token punctuation">.</span>elected<span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token operator">...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="61-controllerstart">6.1. controller.start</h2>
+<p>start&#x4E3B;&#x8981;&#x5305;&#x542B;2&#x4E2A;&#x90E8;&#x5206;</p>
+<ul>
+<li>&#x540C;&#x6B65;cache&#xFF1A;WaitForSync</li>
+<li>&#x542F;&#x52A8;&#x6307;&#x5B9A;&#x5E76;&#x53D1;&#x6570;&#x7684;worker&#xFF1A;processNextWorkItem</li>
+</ul>
+<p>&#x8BE5;&#x90E8;&#x5206;&#x7684;&#x4EE3;&#x7801;&#x903B;&#x8F91;&#x8DDF;k8s controller-manager&#x4E2D;&#x7684;&#x5177;&#x4F53;&#x7684;controller&#x7684;&#x903B;&#x8F91;&#x7C7B;&#x4F3C;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Controller<span class="token punctuation">)</span> <span class="token function">Start</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+  <span class="token operator">...</span>
+    err <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+        <span class="token operator">...</span>
+        <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> watch <span class="token operator">:=</span> <span class="token keyword">range</span> c<span class="token punctuation">.</span>startWatches <span class="token punctuation">{</span>
+            syncingSource<span class="token punctuation">,</span> ok <span class="token operator">:=</span> watch<span class="token punctuation">.</span>src<span class="token punctuation">.</span><span class="token punctuation">(</span>source<span class="token punctuation">.</span>SyncingSource<span class="token punctuation">)</span>
+      <span class="token comment">// &#x540C;&#x6B65;list-watch&#x4E2D;&#x7684;cache&#x6570;&#x636E;&#x3002;</span>
+            <span class="token keyword">if</span> err <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+                <span class="token keyword">if</span> err <span class="token operator">:=</span> syncingSource<span class="token punctuation">.</span><span class="token function">WaitForSync</span><span class="token punctuation">(</span>sourceStartCtx<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+          <span class="token operator">...</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token comment">// &#x8FD0;&#x884C;&#x6307;&#x5B9A;&#x5E76;&#x53D1;&#x6570;&#x7684;processNextWorkItem&#x4EFB;&#x52A1;&#x3002;</span>
+        <span class="token comment">// Launch workers to process resources</span>
+        c<span class="token punctuation">.</span><span class="token function">LogConstructor</span><span class="token punctuation">(</span><span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Info</span><span class="token punctuation">(</span><span class="token string">&quot;Starting workers&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;worker count&quot;</span><span class="token punctuation">,</span> c<span class="token punctuation">.</span>MaxConcurrentReconciles<span class="token punctuation">)</span>
+        wg<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>MaxConcurrentReconciles<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> c<span class="token punctuation">.</span>MaxConcurrentReconciles<span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+            <span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">defer</span> wg<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token comment">// Run a worker thread that just dequeues items, processes them, and marks them done.</span>
+                <span class="token comment">// It enforces that the reconcileHandler is never invoked concurrently with the same object.</span>
+                <span class="token keyword">for</span> c<span class="token punctuation">.</span><span class="token function">processNextWorkItem</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token operator">...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="62-processnextworkitem">6.2. processNextWorkItem</h2>
+<p>&#x7ECF;&#x5178;&#x7684;<code>processNextWorkItem</code>&#x51FD;&#x6570;&#xFF0C;&#x6700;&#x7EC8;&#x8C03;&#x7528;<code>reconcileHandler</code>&#x6765;&#x5904;&#x7406;&#x5177;&#x4F53;&#x7684;&#x903B;&#x8F91;&#x3002;</p>
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Controller<span class="token punctuation">)</span> <span class="token function">processNextWorkItem</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+    obj<span class="token punctuation">,</span> shutdown <span class="token operator">:=</span> c<span class="token punctuation">.</span>Queue<span class="token punctuation">.</span><span class="token function">Get</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> shutdown <span class="token punctuation">{</span>
+        <span class="token comment">// Stop working</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">defer</span> c<span class="token punctuation">.</span>Queue<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span>
+
+    ctrlmetrics<span class="token punctuation">.</span>ActiveWorkers<span class="token punctuation">.</span><span class="token function">WithLabelValues</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">defer</span> ctrlmetrics<span class="token punctuation">.</span>ActiveWorkers<span class="token punctuation">.</span><span class="token function">WithLabelValues</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+    c<span class="token punctuation">.</span><span class="token function">reconcileHandler</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> obj<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="7-reconcilehandler">7. reconcileHandler</h1>
+<p>reconcileHandler&#x90E8;&#x5206;&#x7684;&#x4EE3;&#x7801;&#x662F;&#x6574;&#x4E2A;reconciler&#x903B;&#x8F91;&#x4E2D;&#x7684;&#x6838;&#x5FC3;&#xFF0C;&#x81EA;&#x5B9A;&#x4E49;&#x7684;reconciler&#x51FD;&#x6570;&#x6700;&#x7EC8;&#x662F;&#x8C03;&#x7528;&#x4E86;reconcileHandler&#x6765;&#x5B9E;&#x73B0;&#xFF0C;&#x5E76;&#x4E14;&#x8BE5;&#x51FD;&#x6570;&#x63CF;&#x8FF0;&#x4E86;&#x5177;&#x4F53;&#x7684;&#x4EFB;&#x52A1;&#x961F;&#x5217;&#x5904;&#x7406;&#x7684;&#x51E0;&#x79CD;&#x7C7B;&#x578B;&#x3002;</p>
+<ul>
+<li><code>err != nil</code>&#xFF1A;&#x5982;&#x679C;&#x9519;&#x8BEF;&#x4E0D;&#x4E3A;&#x7A7A;&#xFF0C;&#x5219;&#x91CD;&#x65B0;&#x5165;&#x961F;&#xFF0C;&#x7B49;&#x5F85;&#x5904;&#x7406;&#x3002;</li>
+<li><code>result.RequeueAfter &gt; 0</code>&#xFF1A;&#x5982;&#x679C;&#x6307;&#x5B9A;RequeueAfter &gt; 0&#xFF0C;&#x5219;&#x505A;&#x5EF6;&#x8FDF;&#x5165;&#x961F;&#x5904;&#x7406;&#x3002;</li>
+<li><code>result.Requeue</code>&#xFF1A;&#x5982;&#x4F55;&#x6307;&#x5B9A;&#x4E86;requeue&#x5219;&#x8868;&#x793A;&#x9A6C;&#x4E0A;&#x91CD;&#x65B0;&#x5165;&#x961F;&#x5904;&#x7406;&#x3002;</li>
+<li><code>err == nil</code> : &#x5982;&#x679C;&#x9519;&#x8BEF;&#x4E3A;&#x7A7A;&#xFF0C;&#x8868;&#x793A;reconcile&#x6210;&#x529F;&#xFF0C;&#x5219;&#x79FB;&#x9664;&#x961F;&#x5217;&#x7684;&#x4EFB;&#x52A1;&#x3002;</li>
+</ul>
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Controller<span class="token punctuation">)</span> <span class="token function">reconcileHandler</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> obj <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// &#x83B7;&#x53D6;k8s crd&#x7684;&#x5177;&#x4F53;&#x5BF9;&#x8C61;</span>
+    req<span class="token punctuation">,</span> ok <span class="token operator">:=</span> obj<span class="token punctuation">.</span><span class="token punctuation">(</span>reconcile<span class="token punctuation">.</span>Request<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span>ok <span class="token punctuation">{</span>
+        <span class="token comment">// As the item in the workqueue is actually invalid, we call</span>
+        <span class="token comment">// Forget here else we&apos;d go into a loop of attempting to</span>
+        <span class="token comment">// process a work item that is invalid.</span>
+        c<span class="token punctuation">.</span>Queue<span class="token punctuation">.</span><span class="token function">Forget</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span>
+        c<span class="token punctuation">.</span><span class="token function">LogConstructor</span><span class="token punctuation">(</span><span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span><span class="token boolean">nil</span><span class="token punctuation">,</span> <span class="token string">&quot;Queue item was not a Request&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;type&quot;</span><span class="token punctuation">,</span> fmt<span class="token punctuation">.</span><span class="token function">Sprintf</span><span class="token punctuation">(</span><span class="token string">&quot;%T&quot;</span><span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">&quot;value&quot;</span><span class="token punctuation">,</span> obj<span class="token punctuation">)</span>
+        <span class="token comment">// Return true, don&apos;t take a break</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// &#x8C03;&#x7528;&#x7528;&#x6237;&#x5B9A;&#x4E49;&#x7684;Reconcile&#x51FD;&#x6570;&#xFF0C;&#x5E76;&#x5BF9;&#x8FD4;&#x56DE;&#x7ED3;&#x679C;&#x8FDB;&#x884C;&#x5904;&#x7406;&#x3002;</span>
+    result<span class="token punctuation">,</span> err <span class="token operator">:=</span> c<span class="token punctuation">.</span><span class="token function">Reconcile</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> req<span class="token punctuation">)</span>
+    <span class="token keyword">switch</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span><span class="token punctuation">:</span>
+    <span class="token comment">// &#x5982;&#x679C;&#x9519;&#x8BEF;&#x4E0D;&#x4E3A;&#x7A7A;&#xFF0C;&#x5219;&#x91CD;&#x65B0;&#x5165;&#x961F;&#xFF0C;&#x7B49;&#x5F85;&#x5904;&#x7406;</span>
+        <span class="token keyword">if</span> errors<span class="token punctuation">.</span><span class="token function">Is</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> reconcile<span class="token punctuation">.</span><span class="token function">TerminalError</span><span class="token punctuation">(</span><span class="token boolean">nil</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            ctrlmetrics<span class="token punctuation">.</span>TerminalReconcileErrors<span class="token punctuation">.</span><span class="token function">WithLabelValues</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>Name<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            c<span class="token punctuation">.</span>Queue<span class="token punctuation">.</span><span class="token function">AddRateLimited</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token keyword">case</span> result<span class="token punctuation">.</span>RequeueAfter <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">:</span>
+        <span class="token comment">// &#x5982;&#x679C;&#x6307;&#x5B9A;&#x4E86;&#x5EF6;&#x8FDF;&#x5165;&#x961F;&#xFF0C;&#x5219;&#x505A;&#x5EF6;&#x8FDF;&#x5165;&#x961F;&#x5904;&#x7406;</span>
+        c<span class="token punctuation">.</span>Queue<span class="token punctuation">.</span><span class="token function">Forget</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span>
+        c<span class="token punctuation">.</span>Queue<span class="token punctuation">.</span><span class="token function">AddAfter</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> result<span class="token punctuation">.</span>RequeueAfter<span class="token punctuation">)</span>
+    <span class="token keyword">case</span> result<span class="token punctuation">.</span>Requeue<span class="token punctuation">:</span>
+        <span class="token comment">// &#x5982;&#x679C;&#x6307;&#x5B9A;&#x4E86;&#x9A6C;&#x4E0A;&#x5165;&#x961F;&#xFF0C;&#x5219;&#x505A;&#x76F8;&#x5E94;&#x5904;&#x7406;</span>
+        c<span class="token punctuation">.</span>Queue<span class="token punctuation">.</span><span class="token function">AddRateLimited</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+    <span class="token comment">// &#x5982;&#x679C;&#x9519;&#x8BEF;&#x4E3A;&#x7A7A;&#xFF0C;&#x8868;&#x793A;reconcile&#x6210;&#x529F;&#xFF0C;&#x5219;&#x79FB;&#x9664;&#x961F;&#x5217;&#x7684;&#x4EFB;&#x52A1;</span>
+        log<span class="token punctuation">.</span><span class="token function">V</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Info</span><span class="token punctuation">(</span><span class="token string">&quot;Reconcile successful&quot;</span><span class="token punctuation">)</span>
+        <span class="token comment">// Finally, if no error occurs we Forget this item so it does not</span>
+        <span class="token comment">// get queued again until another change happens.</span>
+        c<span class="token punctuation">.</span>Queue<span class="token punctuation">.</span><span class="token function">Forget</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="8-&#x603B;&#x7ED3;">8. &#x603B;&#x7ED3;</h1>
+<ol>
+<li>controller-runtime&#x5C01;&#x88C5;&#x4E86;k8s-controller-manager&#x63A7;&#x5236;&#x5668;&#x7684;&#x4E3B;&#x8981;&#x903B;&#x8F91;&#xFF0C;&#x5176;&#x4E2D;&#x5C31;&#x5305;&#x62EC;&#x521B;&#x5EFA;list-watch&#x5BF9;&#x8C61;&#xFF0C;waitForSync&#x7B49;&#xFF0C;&#x521B;&#x5EFA;&#x4EFB;&#x52A1;&#x961F;&#x5217;&#xFF0C;&#x5C06;&#x4EFB;&#x52A1;&#x5904;&#x7406;&#x7684;goroutine&#x62BD;&#x8C61;&#x6210;&#x4E00;&#x4E2A;reconcile&#x51FD;&#x6570;&#xFF0C;&#x4F7F;&#x7528;&#x6237;&#x66F4;&#x65B9;&#x4FBF;&#x7684;&#x7F16;&#x5199;operator&#x5DE5;&#x5177;&#x3002;</li>
+<li>kubebuilder&#x662F;&#x4E00;&#x4E2A;&#x57FA;&#x4E8E;controller-runtime&#x6846;&#x67B6;&#x7684;&#x547D;&#x4EE4;&#x751F;&#x6210;&#x5DE5;&#x5177;&#x3002;&#x53EF;&#x4EE5;&#x7528;&#x4E8E;&#x5FEB;&#x901F;&#x751F;&#x6210;&#x548C;&#x90E8;&#x7F72;crd&#x5BF9;&#x8C61;&#xFF0C;&#x5FEB;&#x901F;&#x751F;&#x6210;controller-runtime&#x6846;&#x67B6;&#x7684;&#x57FA;&#x672C;&#x4EE3;&#x7801;&#x3002;</li>
+<li>controller-runtime&#x6846;&#x67B6;&#x7684;&#x6700;&#x6838;&#x5FC3;&#x9700;&#x8981;&#x5904;&#x7406;&#x7684;&#x4EE3;&#x7406;&#x53CA;&#x5904;&#x7406;reconcile&#x51FD;&#x6570;&#xFF0C;&#x8BE5;&#x51FD;&#x6570;&#x5B9A;&#x4E49;&#x4E86;4&#x79CD;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x53CA;&#x5165;&#x961F;&#x91CD;&#x8BD5;&#x7684;&#x7C7B;&#x578B;&#x3002;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x5177;&#x4F53;&#x7684;&#x4E1A;&#x52A1;&#x9700;&#x6C42;&#x9009;&#x62E9;&#x5408;&#x9002;&#x7684;&#x65B9;&#x6CD5;&#x6765;&#x5904;&#x7406;&#x3002;</li>
+</ol>
+<p>&#x53C2;&#x8003;&#xFF1A;</p>
+<ul>
+<li><p><a href="https://qiankunli.github.io/2020/08/10/controller_runtime.html" target="_blank">controller-runtime&#x6E90;&#x7801;&#x5206;&#x6790; | &#x674E;&#x4E7E;&#x5764;&#x7684;&#x535A;&#x5BA2;</a></p>
+</li>
+<li><p><a href="https://qiankunli.github.io/2022/11/24/controller_runtime_detail.html" target="_blank">controller-runtime&#x7EC6;&#x8282;&#x5206;&#x6790; | &#x674E;&#x4E7E;&#x5764;&#x7684;&#x535A;&#x5BA2;</a></p>
+</li>
+</ul>
+<footer class="page-footer"><span class="copyright">Copyright &#xA9; www.huweihuang.com 2017-2018 all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">Updated at 
+2024-07-05 19:03:46
+</span></footer>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="daemonset-controller.html" class="navigation navigation-prev " aria-label="Previous page: DaemonsetController">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../kube-scheduler/scheduler-xmind.html" class="navigation navigation-next " aria-label="Next page: 源码思维导图">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"header-img":"https://res.cloudinary.com/dqxtn0ick/image/upload/v1542285471/header/building.jpg","date":"2024-06-10T21:24:24.000Z","subtitle":null,"catagories":["源码分析"],"title":"ControllerRuntime","weight":10,"tags":["源码分析"],"catalog":true,"linkTitle":"controller-runtime源码分析","level":"3.7","depth":1,"next":{"title":"源码思维导图","level":"4.1","depth":1,"path":"kube-scheduler/scheduler-xmind.md","ref":"kube-scheduler/scheduler-xmind.md","articles":[]},"previous":{"title":"DaemonsetController","level":"3.6","depth":1,"path":"kube-controller-manager/daemonset-controller.md","ref":"kube-controller-manager/daemonset-controller.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","codesnippet","splitter","page-toc-button","image-captions","editlink","back-to-top-button","-lunr","-search","search-plus","github-buttons@2.1.0","favicon@^0.0.2","tbfed-pagefooter@^0.0.1","3-ba","theme-default","-highlight","prism","prism-themes","sitemap-general","ga","disqus","donate"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright © www.huweihuang.com 2017-2018","modify_label":"Updated at ","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-okaidia.css"]},"disqus":{"useIdentifier":false,"shortName":"huweihuang"},"github":{"url":"https://github.com/huweihuang"},"editlink":{"label":"编辑本页","multilingual":false,"base":"https://github.com/huweihuang/k8s-source-code-analysis/blob/master/"},"splitter":{},"donate":{"alipay":"https://res.cloudinary.com/dqxtn0ick/image/upload/v1551599640/blog/donate/alipay.jpg","alipayText":"支付宝打赏","button":"赏","title":"","wechat":"https://res.cloudinary.com/dqxtn0ick/image/upload/v1551599472/blog/donate/wechatpay.jpg","wechatText":"微信打赏"},"codesnippet":{},"sitemap-general":{"prefix":"https://www.huweihuang.com/k8s-source-code-analysis/"},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon":{"shortcut":"images/favicon.ico","bookmark":"images/favicon.ico","appleTouch":"images/favicon.ico","appleTouchMore":{"120x120":"images/favicon.ico","180x180":"images/favicon.ico"}},"page-toc-button":{},"back-to-top-button":{},"prism-themes":{},"github-buttons":{"repo":"huweihuang/k8s-source-code-analysis","types":["star"],"size":"small"},"3-ba":{"configuration":"auto","token":"e146d71b77957235bba1e709d930f62e"},"ga":{"configuration":"auto","token":"UA-114718458-2"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"showLevel":true,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{},"image-captions":{"caption":"图片 - _CAPTION_","variable_name":"_pictures"}},"theme":"default","author":"胡伟煌","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{"_pictures":[]},"title":"Kubernetes 学习笔记","language":"zh-hans","links":{"sidebar":{"胡伟煌的博客":"https://www.huweihuang.com","Kubernetes 学习笔记":"https://www.huweihuang.com/kubernetes-notes/","Golang 学习笔记":"https://www.huweihuang.com/golang-notes/","Linux 学习笔记":"https://www.huweihuang.com/linux-notes/","数据结构学习笔记":"https://www.huweihuang.com/data-structure-notes/","Python 学习笔记":"https://www.huweihuang.com/python-notes/","Blockchain 学习笔记":"https://www.huweihuang.com/blockchain-notes/"}},"gitbook":"*","description":"Kubernetes 学习笔记"},"file":{"path":"kube-controller-manager/controller-runtime.md","mtime":"2024-07-05T11:03:46.821Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2024-07-05T11:03:48.641Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-splitter/splitter.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-page-toc-button/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-editlink/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-plus/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-plus/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-github-buttons/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-3-ba/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.16.1/URI.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-disqus/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-donate/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

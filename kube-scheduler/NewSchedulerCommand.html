@@ -277,30 +277,29 @@
             
         </li>
     
-        <li class="chapter " data-level="3.4" >
+        <li class="chapter " data-level="3.4" data-path="../kube-controller-manager/informer.html">
             
-                <span>
+                <a href="../kube-controller-manager/informer.html">
             
                     
                         <b>3.4.</b>
                     
                     Informer机制
             
-                </span>
+                </a>
             
 
             
-            <ul class="articles">
-                
+        </li>
     
-        <li class="chapter " data-level="3.4.1" data-path="../kube-controller-manager/list-watch/informer.html">
+        <li class="chapter " data-level="3.5" data-path="../kube-controller-manager/replicaset-controller.html">
             
-                <a href="../kube-controller-manager/list-watch/informer.html">
+                <a href="../kube-controller-manager/replicaset-controller.html">
             
                     
-                        <b>3.4.1.</b>
+                        <b>3.5.</b>
                     
-                    Informer原理
+                    ReplicasetController
             
                 </a>
             
@@ -308,14 +307,14 @@
             
         </li>
     
-        <li class="chapter " data-level="3.4.2" data-path="../kube-controller-manager/list-watch/sharedIndexInformer.html">
+        <li class="chapter " data-level="3.6" data-path="../kube-controller-manager/daemonset-controller.html">
             
-                <a href="../kube-controller-manager/list-watch/sharedIndexInformer.html">
+                <a href="../kube-controller-manager/daemonset-controller.html">
             
                     
-                        <b>3.4.2.</b>
+                        <b>3.6.</b>
                     
-                    sharedIndexInformer
+                    DaemonsetController
             
                 </a>
             
@@ -323,68 +322,18 @@
             
         </li>
     
-        <li class="chapter " data-level="3.4.3" data-path="../kube-controller-manager/list-watch/reflector.html">
+        <li class="chapter " data-level="3.7" data-path="../kube-controller-manager/controller-runtime.html">
             
-                <a href="../kube-controller-manager/list-watch/reflector.html">
+                <a href="../kube-controller-manager/controller-runtime.html">
             
                     
-                        <b>3.4.3.</b>
+                        <b>3.7.</b>
                     
-                    Reflector
+                    ControllerRuntime
             
                 </a>
             
 
-            
-        </li>
-    
-        <li class="chapter " data-level="3.4.4" data-path="../kube-controller-manager/list-watch/DeltaFIFO.html">
-            
-                <a href="../kube-controller-manager/list-watch/DeltaFIFO.html">
-            
-                    
-                        <b>3.4.4.</b>
-                    
-                    DeltaFIFO
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="3.4.5" data-path="../kube-controller-manager/list-watch/processLoop.html">
-            
-                <a href="../kube-controller-manager/list-watch/processLoop.html">
-            
-                    
-                        <b>3.4.5.</b>
-                    
-                    processLoop
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="3.4.6" data-path="../kube-controller-manager/list-watch/summary.html">
-            
-                <a href="../kube-controller-manager/list-watch/summary.html">
-            
-                    
-                        <b>3.4.6.</b>
-                    
-                    总结
-            
-                </a>
-            
-
-            
-        </li>
-    
-
-            </ul>
             
         </li>
     
@@ -642,8 +591,7 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="kube-scheduler&#x6E90;&#x7801;&#x5206;&#x6790;&#xFF08;&#x4E00;&#xFF09;&#x4E4B;-newschedulercommand">kube-scheduler&#x6E90;&#x7801;&#x5206;&#x6790;&#xFF08;&#x4E00;&#xFF09;&#x4E4B; NewSchedulerCommand</h1>
-<blockquote>
+                                <blockquote>
 <p>&#x4EE5;&#x4E0B;&#x4EE3;&#x7801;&#x5206;&#x6790;&#x57FA;&#x4E8E; <code>kubernetes v1.12.0</code> &#x7248;&#x672C;&#x3002;</p>
 </blockquote>
 <p>scheduler&#x7684;<code>cmd</code>&#x4EE3;&#x7801;&#x76EE;&#x5F55;&#x7ED3;&#x6784;&#x5982;&#x4E0B;&#xFF1A;</p>
@@ -1049,7 +997,7 @@ ctx<span class="token punctuation">,</span> cancel <span class="token operator">
 <li><a href="https://github.com/kubernetes/kubernetes/blob/v1.12.0/cmd/kube-scheduler/app/server.go" target="_blank">https://github.com/kubernetes/kubernetes/blob/v1.12.0/cmd/kube-scheduler/app/server.go</a></li>
 </ul>
 <footer class="page-footer"><span class="copyright">Copyright &#xA9; www.huweihuang.com 2017-2018 all right reserved&#xFF0C;powered by Gitbook</span><span class="footer-modification">Updated at 
-2019-07-31 10:18:04
+2024-07-05 19:03:46
 </span></footer>
                                 
                                 </section>
@@ -1093,7 +1041,7 @@ ctx<span class="token punctuation">,</span> cancel <span class="token operator">
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"NewSchedulerCommand","level":"4.2","depth":1,"next":{"title":"registerAlgorithmProvider","level":"4.3","depth":1,"path":"kube-scheduler/registerAlgorithmProvider.md","ref":"kube-scheduler/registerAlgorithmProvider.md","articles":[]},"previous":{"title":"源码思维导图","level":"4.1","depth":1,"path":"kube-scheduler/scheduler-xmind.md","ref":"kube-scheduler/scheduler-xmind.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","codesnippet","splitter","page-toc-button","image-captions","editlink","back-to-top-button","-lunr","-search","search-plus","github-buttons@2.1.0","favicon@^0.0.2","tbfed-pagefooter@^0.0.1","3-ba","theme-default","-highlight","prism","prism-themes","sitemap-general","ga","disqus","donate"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright © www.huweihuang.com 2017-2018","modify_label":"Updated at ","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-okaidia.css"]},"disqus":{"useIdentifier":false,"shortName":"huweihuang"},"github":{"url":"https://github.com/huweihuang"},"editlink":{"label":"编辑本页","multilingual":false,"base":"https://github.com/huweihuang/k8s-source-code-analysis/blob/master/"},"splitter":{},"donate":{"alipay":"https://res.cloudinary.com/dqxtn0ick/image/upload/v1551599640/blog/donate/alipay.jpg","alipayText":"支付宝打赏","button":"赏","title":"","wechat":"https://res.cloudinary.com/dqxtn0ick/image/upload/v1551599472/blog/donate/wechatpay.jpg","wechatText":"微信打赏"},"codesnippet":{},"sitemap-general":{"prefix":"https://www.huweihuang.com/k8s-source-code-analysis/"},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon":{"shortcut":"images/favicon.ico","bookmark":"images/favicon.ico","appleTouch":"images/favicon.ico","appleTouchMore":{"120x120":"images/favicon.ico","180x180":"images/favicon.ico"}},"page-toc-button":{},"back-to-top-button":{},"prism-themes":{},"github-buttons":{"repo":"huweihuang/k8s-source-code-analysis","types":["star"],"size":"small"},"3-ba":{"configuration":"auto","token":"e146d71b77957235bba1e709d930f62e"},"ga":{"configuration":"auto","token":"UA-114718458-2"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"showLevel":true,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{},"image-captions":{"caption":"图片 - _CAPTION_","variable_name":"_pictures"}},"theme":"default","author":"胡伟煌","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{"_pictures":[]},"title":"Kubernetes 学习笔记","language":"zh-hans","links":{"sidebar":{"胡伟煌的博客":"https://www.huweihuang.com","Kubernetes 学习笔记":"https://www.huweihuang.com/kubernetes-notes/","Golang 学习笔记":"https://www.huweihuang.com/golang-notes/","Linux 学习笔记":"https://www.huweihuang.com/linux-notes/","数据结构学习笔记":"https://www.huweihuang.com/data-structure-notes/","Python 学习笔记":"https://www.huweihuang.com/python-notes/","Blockchain 学习笔记":"https://www.huweihuang.com/blockchain-notes/"}},"gitbook":"*","description":"Kubernetes 学习笔记"},"file":{"path":"kube-scheduler/NewSchedulerCommand.md","mtime":"2019-07-31T02:18:04.149Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-04-18T05:21:03.322Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"header-img":"https://res.cloudinary.com/dqxtn0ick/image/upload/v1542285471/header/building.jpg","date":"2018-10-03T21:25:24.000Z","subtitle":null,"catagories":["源码分析"],"title":"NewSchedulerCommand","weight":2,"tags":["源码分析"],"catalog":true,"linkTitle":"NewSchedulerCommand","level":"4.2","depth":1,"next":{"title":"registerAlgorithmProvider","level":"4.3","depth":1,"path":"kube-scheduler/registerAlgorithmProvider.md","ref":"kube-scheduler/registerAlgorithmProvider.md","articles":[]},"previous":{"title":"源码思维导图","level":"4.1","depth":1,"path":"kube-scheduler/scheduler-xmind.md","ref":"kube-scheduler/scheduler-xmind.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","codesnippet","splitter","page-toc-button","image-captions","editlink","back-to-top-button","-lunr","-search","search-plus","github-buttons@2.1.0","favicon@^0.0.2","tbfed-pagefooter@^0.0.1","3-ba","theme-default","-highlight","prism","prism-themes","sitemap-general","ga","disqus","donate"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"tbfed-pagefooter":{"copyright":"Copyright © www.huweihuang.com 2017-2018","modify_label":"Updated at ","modify_format":"YYYY-MM-DD HH:mm:ss"},"prism":{"css":["prismjs/themes/prism-okaidia.css"]},"disqus":{"useIdentifier":false,"shortName":"huweihuang"},"github":{"url":"https://github.com/huweihuang"},"editlink":{"label":"编辑本页","multilingual":false,"base":"https://github.com/huweihuang/k8s-source-code-analysis/blob/master/"},"splitter":{},"donate":{"alipay":"https://res.cloudinary.com/dqxtn0ick/image/upload/v1551599640/blog/donate/alipay.jpg","alipayText":"支付宝打赏","button":"赏","title":"","wechat":"https://res.cloudinary.com/dqxtn0ick/image/upload/v1551599472/blog/donate/wechatpay.jpg","wechatText":"微信打赏"},"codesnippet":{},"sitemap-general":{"prefix":"https://www.huweihuang.com/k8s-source-code-analysis/"},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon":{"shortcut":"images/favicon.ico","bookmark":"images/favicon.ico","appleTouch":"images/favicon.ico","appleTouchMore":{"120x120":"images/favicon.ico","180x180":"images/favicon.ico"}},"page-toc-button":{},"back-to-top-button":{},"prism-themes":{},"github-buttons":{"repo":"huweihuang/k8s-source-code-analysis","types":["star"],"size":"small"},"3-ba":{"configuration":"auto","token":"e146d71b77957235bba1e709d930f62e"},"ga":{"configuration":"auto","token":"UA-114718458-2"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"showLevel":true,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{},"image-captions":{"caption":"图片 - _CAPTION_","variable_name":"_pictures"}},"theme":"default","author":"胡伟煌","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{"_pictures":[]},"title":"Kubernetes 学习笔记","language":"zh-hans","links":{"sidebar":{"胡伟煌的博客":"https://www.huweihuang.com","Kubernetes 学习笔记":"https://www.huweihuang.com/kubernetes-notes/","Golang 学习笔记":"https://www.huweihuang.com/golang-notes/","Linux 学习笔记":"https://www.huweihuang.com/linux-notes/","数据结构学习笔记":"https://www.huweihuang.com/data-structure-notes/","Python 学习笔记":"https://www.huweihuang.com/python-notes/","Blockchain 学习笔记":"https://www.huweihuang.com/blockchain-notes/"}},"gitbook":"*","description":"Kubernetes 学习笔记"},"file":{"path":"kube-scheduler/NewSchedulerCommand.md","mtime":"2024-07-05T11:03:46.825Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2024-07-05T11:03:48.641Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
