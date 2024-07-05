@@ -1,4 +1,17 @@
-# kubelet源码分析（四）之 syncLoopIteration
+---
+title: "kubelet源码分析（四）之 syncLoopIteration"
+linkTitle: "syncLoopIteration"
+weight: 5
+catalog: true
+date: 2018-10-3 19:24:24
+subtitle:
+header-img: "https://res.cloudinary.com/dqxtn0ick/image/upload/v1542285471/header/building.jpg"
+tags:
+- 源码分析
+catagories:
+- 源码分析
+---
+
 
 > 以下代码分析基于 `kubernetes v1.12.0` 版本。
 

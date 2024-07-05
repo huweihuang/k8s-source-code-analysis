@@ -1,4 +1,19 @@
-# kube-scheduler源码分析（五）之 PrioritizeNodes
+---
+title: "kube-scheduler源码分析（五）之 优选策略"
+linkTitle: "优选策略"
+weight: 6
+catalog: true
+date: 2018-10-3 21:29:24
+subtitle:
+header-img: "https://res.cloudinary.com/dqxtn0ick/image/upload/v1542285471/header/building.jpg"
+tags:
+- 源码分析
+catagories:
+- 源码分析
+top: 7
+---
+
+
 
 > 以下代码分析基于 `kubernetes v1.12.0` 版本。
 

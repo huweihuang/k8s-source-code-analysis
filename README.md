@@ -27,13 +27,10 @@
 * [源码思维导图](kube-controller-manager/controller-manager-xmind.md)
 * [NewControllerManagerCommand](kube-controller-manager/NewControllerManagerCommand.md)
 * [DeploymentController](kube-controller-manager/deployment-controller.md)
-* [Informer机制]()
-    * [Informer原理](kube-controller-manager/list-watch/informer.md)
-    * [sharedIndexInformer](kube-controller-manager/list-watch/sharedIndexInformer.md)
-    * [Reflector](kube-controller-manager/list-watch/reflector.md)    
-    * [DeltaFIFO](kube-controller-manager/list-watch/DeltaFIFO.md)
-    * [processLoop](kube-controller-manager/list-watch/processLoop.md)
-    * [总结](kube-controller-manager/list-watch/summary.md)
+* [Informer机制](kube-controller-manager/informer.md)
+* [ReplicasetController](kube-controller-manager/replicaset-controller.md)
+* [DaemonsetController](kube-controller-manager/daemonset-controller.md)
+* [ControllerRuntime](kube-controller-manager/controller-runtime.md)
 
 ## kube-scheduler
 
